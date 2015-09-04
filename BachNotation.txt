@@ -1,0 +1,38 @@
+Each row is 16 notes over 1 bar (delimited by 15 spaces, apologies it doesn't line up on GitHub)
+
+C	E'	`G	`C	`E'	`G	`C	`E'	C	E'	`G	`C	`E'	`G	`C	`E'
+C	,D'	A'	D'	`F	A'	D'	`F	C	,D'	A'	D'	`F	A'	D'	`F
+B'	`D	`G	``D	``F~7	`G	``D	``F~7	B'	`D	`G	``D	``F~7	`G	``D	``F~7
+C	E'	`G	`C	`E'	`G	`C	`E'	C	E'	`G	`C	`E'	`G	`C	`E'
+C	E'	A'	`E'	`A'	A'	`E'	`A'	C	E'	A'	`E'	`A'	A'	`E'	`A'
+`C~7	`D	`F#'	``A	``D	`F#'	``A	``D	`C~7	`D	`F#'	``A	``D	`F#'	``A	``D
+B'	`D	`G	``D	``G	`G	``D	``G	B'	`D	`G	``D	``G	`G	``D	``G
+B'	C	E'	`G	`C	E'	`G	`C	B'	C	E'	`G	`C	E'	`G	`C
+,A'	C	E'	`G	`C	E'	`G	`C	,A'	C	E'	`G	`C	E'	`G	`C
+D	`A	`D	`F#'	``C~7	`D	`F#'	``C~7	D	`A	`D	`F#'	``C~7	`D	`F#'	``C~7
+G	B'	`D	`G	`B'	`D	`G	`B'	G	B'	`D	`G	`B'	`D	`G	`B'
+G	Bb~7	E'	`G	`C#~17	E'	`G	`C#~17	G	Bb~7	E'	`G	`C#~17	E'	`G	`C#~17
+,F	,A'	,D'	A'	D'	,D'	A'	D'	,F	,A'	,D'	A'	D'	,D'	A'	D'
+,F	,Ab~7	,D'	F	B~17	,D'	F	B~17	,F	,Ab~7	,D'	F	B~17	,D'	F	B~17
+,E'	G	C	`G	`C	C	`G	`C	,E'	G	C	`G	`C	C	`G	`C
+,E'	,F	,A'	C	F	,A'	C	F	,E'	,F	,A'	C	F	,A'	C	F
+,,D'	,F	,A'	C	F	,A'	C	F	,,D'	,F	,A'	C	F	,A'	C	F
+,G	D	G	B'	`F~7	G	B'	`F~7	,G	D	G	B'	`F~7	G	B'	`F~7
+,C	,E'	G	C	E'	G	C	E'	,C	,E'	G	C	E'	G	C	E'
+,C	G	Bb~7	C	E'	Bb~7	C	E'	,C	G	Bb~7	C	E'	Bb~7	C	E'
+,,F	,F	,A'	C	E'	,A'	C	E'	,,F	,F	,A'	C	E'	,A'	C	E'
+,,F#'_7	,C	,A'	C	Eb'_17	,A'	C	Eb'_17	,,F#'_7	,C	,A'	C	Eb'_17	,A'	C	Eb'_17
+,G	,Eb~7	Cb_17	C	Eb~7	Cb_17	C	Eb~7	,G	,Eb~7	Cb_17	C	Eb~7	Cb_17	C	Eb~7
+,Ab.	,F	Cb_17	C	D_7	Cb_17	C	D_7	,Ab.	,F	Cb_17	C	D_7	Cb_17	C	D_7
+,G	F~7	G	B'	`D	G	B'	`D	,G	F~7	G	B'	`D	G	B'	`D
+,G	,E'	G	C	E'	G	C	E'	,G	,E'	G	C	E'	G	C	E'
+,G	D	G	C	F	G	C	F	,G	D	G	C	F	G	C	F
+,G	D	G	B'	`F~7	G	B'	`F~7	,G	D	G	B'	`F~7	G	B'	`F~7
+,G	Eb~13	`A	`C~7	`F#'	`A	`C~7	`F#'	,G	Eb~13	`A	`C~7	`F#'	`A	`C~7	`F#'
+,G	,E'	G	C	`G	G	C	`G	,G	,E'	G	C	`G	G	C	`G
+,G	D	G	C	F#~11	G	C	F#~11	,G	D	G	C	F#~11	G	C	F#~11
+,G	D	G	B'	`F~7	G	B'	`F~7	,G	D	G	B'	`F~7	G	B'	`F~7
+,,C	,C	G	Bb~7	E'	G	Bb~7	E'	,,C	,C	G	Bb~7	E'	G	Bb~7	E'
+,,C	,C	,F	,A'	C	F	C	,A'	C	,A'	,F	,A'	,F	,,D'	,F	,,D'
+,,C	,B'	`G	`B'	``D	``F~7	``D	`B'	``D	`B'	`G	`B'	`D	F	E'	`D
+,,C	,C	E'	`G	`C	X										
