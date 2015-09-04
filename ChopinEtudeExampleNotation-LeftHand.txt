@@ -1,0 +1,89 @@
+This is Chopin's Etude in C (Op. 10, No. 1) - left hand octaves, retuned using JI notation
+
+There are 8 columns, delimited by 7 spaces:
+A1 A5 A9 A13 B1 B5 B9 B13
+
+A is lower note, B is higher note
+1, 5, 9, 13 are the timings in semiquavers (16 in bar), so the LH plays only in four crotchets per bar.
+X means 'No Note'
+
+,,C				,C			
+							
+,,,F				,,F			
+,,,F#'_7				,,F#'_7			
+,,G		,,F#'	,,,E'	,G		,F#'	,,E'
+,,D				,D			
+,,G				,G			
+							
+,,C				,C			
+							
+,,,A'				,,A'			
+							
+,,G				,G			
+							
+,,C				,C			
+							
+,,,A'				,,A'			
+,,,B'_7		,,,A'		,,B'_7		,,A'	
+,,,,G#''_7				,,,G#''_7			
+,,,A'		,,G		,,A'		,G	
+,,,F				,,F			
+							
+,,,E'				,,E'			
+							
+,,,A'				,,A'			
+,,,D'				,,D'			
+,,,,G'				,,,G'			
+							
+,,,,C'				,,,C'			
+,,,Gb~7				,,Gb~7			
+,,,,,F'				,,,,F'			
+,,,,Cb~7				,,,Cb~7			
+,,,,,Bb'				,,,,,Bb'			
+,,,,Bb'				,,,,Bb'			
+,,,,,,A''_7				,,,,,A''_7			
+							
+,,,,,,D''_7				,,,,,,D''_7			
+,,,,,,,G''_7				,,,,,,G''_7			
+,,,,,,,C''_7				,,,,,,,C''_7			
+,,,,,,,,F''_7				,,,,,,,F''_7			
+,,,,,,,B'''_7				,,,,,,,B'''_7			
+,,,,,,,,E'''_7		,,,,,,,A'''		,,,,,,,E'''_7		,,,,,,A'''	
+,,,,,,D''		,,,,,G''~7		,,,,,D''		,,,,G''~7	
+,,,,C'		,,,F_7		,,,C'		,,F_7	
+,,,,B'_7_7			,,,,B'_7_7	,,,B'_7_7			,,,,B'_7_7
+,,,,B'_7_7			,,,,B'_7_7	,,,B'_7_7			,,,,B'_7_7
+,,,,E'_7				,,,E'_7			
+			,,D				,D
+,,,C				,,C			
+,C							
+,,,F				,,F			
+,,,F#'_7				,,F#'_7			
+,,G		,,F#'	,,,E'	,G		,F#'	,,E'
+,,D				,D			
+,,G				,G			
+							
+,,C				,C			
+							
+,,,A'				,,A'			
+			,,Ab.				,Ab.
+,,G				,G			
+							
+,,F#'				,F#'			
+,F.		`F.~7		F.		`F.~7	
+,E				E			
+`E				`E			
+,D				,D			
+,,G				,G			
+,,C				,,C			
+				,C			
+,,C				,,C			
+,,G				,G			
+,,G				,G			
+							
+,,G				,G			
+							
+,,,C				,,,C			
+							
+,,,C				,,,C			
+X				X			
