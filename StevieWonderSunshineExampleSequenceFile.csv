@@ -10,6 +10,7 @@ Voice number  Start time (beats)  Frequency (Hz)  Note Duration (beats)  Loudnes
 The frequencies are rational numbers.
 The base frequency is C = 7040/27 Hz
 
+(The original CSV file starts on the next line)
 5497	132	521.4814815	1	53	0.1
 5497	133	521.4814815	2	53	0.1
 5497	135	521.4814815	1	53	0.1
