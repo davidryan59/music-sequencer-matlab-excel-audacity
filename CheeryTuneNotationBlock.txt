@@ -1,0 +1,286 @@
+23 columns delimited by 22 spaces:
+
+B = Bass (2 columns, played syncopated over 8 quavers in a bar)
+H = Harmony (5 columns, played rotating over 8 quavers)
+M = Melody 1 (8 columns played in series, each is a quaver long)
+N = Melody 2 (8 columns)
+
+B1	B2	H1	H2	H3	H4	H5	M1	M2	M3	M4	M5	M6	M7	M8	N1	N2	N3	N4	N5	N6	N7	N8	Comment
+,,C	,C	,F#~11	Ab~13	C	F#~11	`Ab~13									``E'	X	``F#~11	X	```D	X	``C	X	Intro
+,,C	,C	,E'	G	C	E'	`Bb~7									``Bb~7		``G		`E'		`C		
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X	X								7a (major)
+,,,A'	,,A'	,F	,A'	C	F	A'	,Bb		X	C		X	,D'										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb				X							G'		X	`Fb.~7		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb									`F		X	D'				X	
+,,C	,C	G	C	E'	`G	`C	X		`G		X	E'		X									
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	Eb~19		X	C#~17		X	C										
+,,,A'	,,A'	,F	,A'	C	F	A'						X					`A'		X	`Bb		X	
+,,G	,G	,F	,A'	C	F	A'									``C	X	``G	`F	X	`F	``G	`A'	
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X		X							
+,,,A'	,,A'	,F	,A'	C	F	A'	`G		X	F		X	F										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb					X						`F		X	`Bb		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb									``C		X	`Bb			`F		
+,,C	,C	G	C	E'	`G	`C	X		E'		F#~11	X	`G		X				X				
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	`Ab~13		X	`Bb~7		X	`C										
+,,,A'	,,A'	,F	,A'	C	F	A'				X							``Ab~13		X	``C		X	
+,,G	,G	,F	,A'	C	F	A'									``Bb~7	``Bb~7	D'	`F	X	`F	``G	`F	
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X	X								7b (major)
+,,,A'	,,A'	,F	,A'	C	F	A'	,Bb		X	C		X	E'										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb	,D'			X							G'		X	`Fb.~7		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb	X								`F		X	`A'		X			
+,,C	,C	G	C	E'	`G	`C	X		`G		X	E'		X									
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	Eb~19		X	C#~17		X	B'										
+,,,A'	,,A'	,F	,A'	C	F	A'	C			X							`A'		X	`Bb		X	
+,,G	,G	,F	,A'	C	F	A'	X								``C		X	`F	X	`F	`Bb	`A'	
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X		X							
+,,,A'	,,A'	,F	,A'	C	F	A'	`G		X	A'		X	F										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb				X							``C		X	`Bb		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb									`F		X	`A'			X		
+,,C	,C	G	C	E'	`G	`C	X		E'	X	`G		`Bb~7										
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	`C#~17		X	`C			X										
+,,,A'	,,A'	,F	,A'	C	F	A'	F					X											
+,,G	,G	,F	G	C	F	`G																	
+,,F	,,,F	,F	,Bb	C	F	Bb																	Interlude
+,,F	,,,F	,F	Bb~7	C#~17	E'	`G																	
+,,,F	,,F	,F	,A'	C	Eb~7	`G									``G	X		`F			X		1 (major / 13th)
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`Bb	X		`A'		X			
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`D'	X		``C			X		
+,,,F	,,F	,F	,A'	C	Eb~7	`G																	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									`E~11		X	`Ab~7	X		`Ab~7		
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									X	`Ab~7		X	`Ab~7	X	`Bb	`B~17	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13											X						
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13																	
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`Bb	X		`A'			X		
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`D'	X		``C			X		
+,,,F	,,F	,F	,A'	C	Eb~7	`G									```G	X		``F		X			
+,,,F	,,F	,F	,A'	C	Eb~7	`G																	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									``F		X	``E~23	X		`E~11		
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									X	``Eb~7	X		`D'		`Db~19	X	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									`D'			X					
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13																	
+,,,F	,,F	,F	,A'	C	Eb~7	`G	X		F		X	C		X	X								7a / 1
+,,,A'	,,A'	,F	,A'	C	Eb~7	`G	Bb~7		X	C		X											
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Ab~7									`F	X		D'			X		
+,,,Ab~7	,,Ab~7	,F	,Bb	,D'	F	Ab~7									`Ab~7	X		G'		X			
+,,,F	,,F	,F	,Ab~7	C	Eb~7	`G	X		F		X	C		X									7a / 1
+,,,Ab~7	,,Ab~7	,F	,Ab~7	C	Eb~7	`G	`G			F		X											
+,,,Bb	,,Bb	,F	,Bb	,Db~7	F	Ab~7										`Ab~7	X	G'	`F		Db~7		
+,,,Ab~7	,,Ab~7	,F	,Bb	,Db~7	F	Ab~7									G'	X		`F		X			
+,,G	,G	G	B'	`D	`F~7	``A	X		`G		X	`D		X	X								7a / 1
+,,B'	,B'	G	B'	`D	`F~7	``A	`C~7		X	`D		X											
+,,C	,C	G	C	E'	`G	`Bb~7									``G	X		`E'			X		
+,,Bb~7	,Bb~7	G	C	E'	`G	`Bb~7									``Bb~7	X		`A'		X			
+,,G	,G	G	Bb~7	`D	`F~7	``A	X		`G		X	`D		X									7a / 1
+,,Bb~7	,Bb~7	G	Bb~7	`D	`F~7	``A	``A			`G		X											
+,,C	,C	G	C	Eb~7	`G	`Bb~7										``Bb~7	X	`A'	``G		`Eb~7		
+,,Bb~7	,Bb~7	G	C	F	`G	C									`A'	X		``G		X	`F		
+,,F	,,F	,F	G	C	F	`G									X		`F		X		``G		Interlude
+,,F	,,F	,F	,Bb	C	F	Bb									X		`Bb			X	B~11	`B~11	
+,,F	,,,F	,F	G	C	F	`G											X	`B~23	X	``B~23			
+,,F	,,,F	,F	C	F	`G	`C												X					
+,,,F	,,F	,F	Ab.	C	`Eb.	`G	`C		`C	X	`C	`C	X	`C									2 (Minor)
+,,,F	,,F	,F	Ab.	C	`Eb.	`G		`C	`C	X	``Eb.		`Ab.	``Bb.									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G				X													
+,,,F	,,F	,F	Ab.	C	`Eb.	`G			`Cb.~7	X	``Bb.	`Ab.		F									
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.					X												
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.			Eb~29		F	`Ab.	X	``Bb.									
+,,C	,C	G	C	`Eb.	`G	``Bb.						X											
+,,C	,C	G	C	`Eb.	`G	``Bb.						`Ab.	X										
+,,,F	,,F	,F	Ab.	C	`Eb.	`G	`C		`C	X	`C	`C	X	`C									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G		`C	`C	X	``Eb.		``G	``Ab.									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G					X												
+,,,F	,,F	,F	Ab.	C	`Eb.	`G			``Ab.	X	`F	``Eb.		`F									
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13			X														
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13			`F		``Eb.	`C	X	`Bb~7									
+,,C	,C	G	Bb~7	C#~17	E'	`G				X													
+,,C	,C	G	Bb~7	C#~17	E'	`G						`Ab.		X									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G	`C		C~71		C~71	C'~7	X	`B~23									3 (Minor)
+,,,F	,,F	,F	Ab.	C	`Eb.	`G		B~17	B~67		B~11	X	`Ab.	Bb									
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.	B~17		Bb		`Ab.	F		E'									
+,,C	,C	G	Bb~7	C#~17	E'	`G	X	`Bb~29	`Bb~19	X	`Bb~7			X									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G									``C		`C~71	X	`C~71	`C'~7	X	``B~23	3 (Minor)
+,,,F	,,F	,F	Ab.	C	`Eb.	`G									X	`B~17	`B~67	X	`B~11		``Ab.	`Bb	
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.									`B~17		`Bb	X	``Ab.	`F	X	`E'	
+,,C	,C	G	Bb~7	C#~17	E'	`G									X	``B'	``Bb~29		``Bb~7			X	
+,,F	,,F	,F	,A'	C	Eb~7	`G																	4 (Mixed)
+,,F	,,F	,F	,Ab~7	C	Eb~7	`G																	
+,G	,,G	G	Bb~7	C	Eb~7	`G											``F	X	`D'	X	``C	X	4 / Intro
+,G	,,G	G	Bb~7	C	E'	`G									``Bb~7		``G		`E'		`C		
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X	X								7a (major)
+,,,A'	,,A'	,F	,A'	C	F	A'	,Bb		X	C		X	,D'										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb				X							G'		X	`Fb.~7		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb									`F		X	D'				X	
+,,C	,C	G	C	E'	`G	`C	X		`G		X	E'		X									
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	Eb~19		X	C#~17		X	C										
+,,,A'	,,A'	,F	,A'	C	F	A'						X					`A'		X	`Bb		X	
+,,G	,G	,F	,A'	C	F	A'									``C	X	``G	`F	X	`F	``G	`A'	
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X		X							
+,,,A'	,,A'	,F	,A'	C	F	A'	`G		X	F		X	F										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb					X						`F		X	`Bb		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb									``C		X	`Bb			`F		
+,,C	,C	G	C	E'	`G	`C	X		E'		F#~11	X	`G		X				X				
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	`Ab~13		X	`Bb~7		X	`C										
+,,,A'	,,A'	,F	,A'	C	F	A'				X							``Ab~13		X	``C		X	
+,,G	,G	,F	,A'	C	F	A'									``Bb~7	``Bb~7	D'	`F	X	`F	``G	`F	
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X	X								7b (major)
+,,,A'	,,A'	,F	,A'	C	F	A'	,Bb		X	C		X	E'										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb	,D'			X							G'		X	`Fb.~7		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb	X								`F		X	`A'			X		
+,,C	,C	G	C	E'	`G	`C	X		`G		X	E'		X									
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	Eb~19		X	C#~17		X	B'										
+,,,A'	,,A'	,F	,A'	C	F	A'	C			X							`A'		X	`Bb		X	
+,,G	,G	,F	,A'	C	F	A'	X								``C		X	`F	X	`F	`Bb	`A'	
+,,,F	,,F	,F	,A'	C	F	A'	X		F		X	C		X		X							
+,,,A'	,,A'	,F	,A'	C	F	A'	`G		X	A'		X	F										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb						X					``C		X	`Bb		X	
+,,,,G'	,,,G'	,F	,Bb	,D'	F	Bb									`F		X	`A'			X		
+,,C	,C	G	C	E'	`G	`C	X		E'	X	`G		`Bb~7										
+,,Bb~7	,Bb~7	G	C	E'	`G	`C	`C#~17		X	`C			X										
+,,,A'	,,A'	,F	,A'	C	F	A'	F					X											
+,,G	,G	,F	G	C	F	`G																	
+,,F	,,,F	,F	,Bb	C	F	Bb																	Interlude
+,,F	,,,F	,F	Bb~7	C#~17	E'	`G																	
+,,,F	,,F	,F	,A'	C	Eb~7	`G									``G	X		`F			X		1 (major / 13th)
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`Bb	X		`A'		X			
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`D'	X		``C			X		
+,,,F	,,F	,F	,A'	C	Eb~7	`G																	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									`E~11		X	`Ab~7	X		`Ab~19		
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									X	`Ab~29			`Ab~7	X	`Bb	`B~17	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13												X					
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13																	
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`Bb	X		`A'			X		
+,,,F	,,F	,F	,A'	C	Eb~7	`G									`D'	X		``C			X		
+,,,F	,,F	,F	,A'	C	Eb~7	`G									```G	X		``F		X			
+,,,F	,,F	,F	,A'	C	Eb~7	`G																	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									``F		X	``E~23	X	`E~11	`E~11		
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									X	``Eb~7	X		`D'		`Db~19	X	
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13									`D'		X						
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13																	
+,,,F	,,F	,F	,A'	C	Eb~7	`G	X		F		X	C		X	X								7a / 1
+,,,A'	,,A'	,F	,A'	C	Eb~7	`G	Bb~7		X	C		X											
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Ab~7									`F	X		D'			X		
+,,,Ab~7	,,Ab~7	,F	,Bb	,D'	F	Ab~7									`Ab~7	X		G'		X			
+,,,F	,,F	,F	,Ab~7	C	Eb~7	`G	X		F		X	C		X									7a / 1
+,,,A'	,,A'	,F	,Ab~7	C	Eb~7	`G	`G			F		X											
+,,,Bb	,,Bb	,F	,Bb	,Db~7	F	Ab~7										`Ab~7	X	G'	`F		Db~7		
+,,,Ab~7	,,Ab~7	,F	,Bb	,Db~7	F	Ab~7									G'	X		`F		X			
+,,G	,G	G	B'	`D	`F~7	``A	X		`G		X	`D		X	X								7a / 1
+,,B'	,B'	G	B'	`D	`F~7	``A	`C~7		X	`D		X											
+,,C	,C	G	C	E'	`G	`Bb~7									``G	X		`E'			X		
+,,Bb~7	,Bb~7	G	C	E'	`G	`Bb~7									``Bb~7	X		`A'		X			
+,,G	,G	G	Bb~7	`D	`F~7	``A	X		`G		X	`D		X									7a / 1
+,,B'	,B'	G	Bb~7	`D	`F~7	``A	``A			`G		X											
+,,C	,C	G	C	Eb~7	`G	`Bb~7										``Bb~7	X	`A'	``G		`Eb~7		
+,,Bb~7	,Bb~7	G	C	F	`G	C									`A'	X		``G		X	`F		
+,,F	,,F	,F	G	C	F	`G									X		`F		X		``G		Interlude
+,,F	,,F	,F	,Bb	C	F	Bb									X		`Bb			X	B~11	`B~11	
+,,F	,,,F	,F	G	C	F	`G											X	`B~23	X	``B~23			
+,,F	,,,F	,F	C	F	`G	`C												X					
+,,,F	,,F	,F	Ab.	C	`Eb.	`G	`C		`C	X	`C	`C	X	`C									2 (Minor)
+,,,F	,,F	,F	Ab.	C	`Eb.	`G		`C	`C	X	``Eb.		`Ab.	``Bb.									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G				X													
+,,,F	,,F	,F	Ab.	C	`Eb.	`G			`Cb.~7	X	``Bb.	`Ab.		F									
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.					X												
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.		Eb~7	Eb~29		F	`Ab.	X	``Bb.									
+,,C	,C	G	C	`Eb.	`G	``Bb.						X											
+,,C	,C	G	C	`Eb.	`G	``Bb.						`Ab.	X										
+,,,F	,,F	,F	Ab.	C	`Eb.	`G	`C		C~11~13	X	C~71	C~11~13	X	`C									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G		C'~29	C~73	X	``Eb.		``G	``Ab.									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G					X												
+,,,F	,,F	,F	Ab.	C	`Eb.	`G			``Ab.	X	`F	``Eb.		`F									
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13			X														
+,,,Bb	,,Bb	,F	,Ab~7	C	,E~11	Gb~13		`F	`F		``Eb.	`C	X	`Bb~7									
+,,C	,C	G	Bb~7	C#~17	E'	`G				X													
+,,C	,C	G	Bb~7	C#~17	E'	`G						`Ab.	X										
+,,,F	,,F	,F	Ab.	C	`Eb.	`G	`C		C~71		C~71	C'~7	X	`B~23									3 (Minor)
+,,,F	,,F	,F	Ab.	C	`Eb.	`G		B~17	B~67		B~11	X	`Ab.	Bb									
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.	B~17		Bb		`Ab.	F		E'									
+,,C	,C	G	Bb~7	C#~17	E'	`G	X	`Bb~29	`Bb~19	X	`Bb~7			X									
+,,,F	,,F	,F	Ab.	C	`Eb.	`G									``C	X	`C~71	X	`C~71	`C'~7	X	``B~23	3 (Minor)
+,,,F	,,F	,F	Ab.	C	`Eb.	`G									X	`B~17	`B~67	X	`B~11		``Ab.	`Bb	
+,,,Bb	,,Bb	,F	,Bb	Db.	F	`Ab.									`B~17		`Bb	X	``Ab.	`F	X	`E'	
+,,C	,C	G	Bb~7	C#~17	E'	`G									X	``B'	``Bb~29		``Bb~7			X	
+,,F	,,F	,F	,A'	C	Eb~7	`G																	4 (Mixed)
+,,F	,,F	,F	Ab.	C	`Eb.	`G																	
+,,F	,,,F	,F	,Ab~7	C	Eb~7	`G																	
+,,,F	,,F	,F	,Ab~7	,B~17	,D'	F																	
+,,,F	,,F	,F	Ab.	C	F	`Ab.			F		X	C		X									7c (minor)
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.	,Bb		X	C		X	Db.										
+,,,Bb	,,Bb	,F	,Bb	Db.	F	Bb					X						`Gb.		X	Eb		X	
+,,,,G'	,,,G'	,F	,Bb	Db.	F	Bb									`F		X	`Db.					
+,,C	,C	G	C	`Eb.	`G	`C	X		`G		X	`Eb.		X	X								
+,Bb.	Bb.	G	C	`Eb.	`G	`C	C#~17		X	`Bb.		X	C										
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.							X				``Ab.		X	`Bb		X	
+,,G	,G	,F	Ab.	C	F	`Ab.									``C	X	``G	`F	X	`F	``G	``Ab.	
+,,,F	,,F	,F	Ab.	C	F	`Ab.	X		F		X	C		X			X						
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.	`G		X	F		X	F										
+,,,Bb	,,Bb	,F	,Bb	Db.	F	Bb						X					`F		X	`Bb		X	
+,,,,G'	,,,G'	,F	,Bb	Db.	F	Bb									``C		X	`Bb			`F		
+,,C	,C	G	C	Eb~19	`G	`C	X		Eb~19		`G		`Bb~7	X	X								
+,Bb.	Bb.	G	C	Eb~19	Eb~19	`G	`Bb~29		X	`B~31		X	`C										
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.					X												
+,,F	,,,F	,F	C	F	Bb	`C																	
+,,,F	,,F	,F	Ab.	C	F	`Ab.	X		F		X	`Ab.		X									7d (minor)
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.	Bb		X	`C		X	`Db.										
+,,,Bb	,,Bb	,F	,Bb	Db.	F	Bb				X							`Gb.		X	Eb		X	
+,,,,G'	,,,G'	,F	,Bb	Db.	F	Bb									`F		X	`Db.			X		
+,,C	,C	G	C	`Eb.	`G	`C	X		`Eb.		X	`G		X									
+,Bb.	Bb.	G	C	`Eb.	`G	`C	`Ab.		X	``Bb.		X	`C										
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.						X					``Ab.		X	`Bb		X	
+,,G	,G	,F	Ab.	C	F	`Ab.									``C	X	``G	`F	X	`F	``G	``Ab.	
+,,,F	,,F	,F	Ab.	C	F	`Ab.	X		F		X	C		X		X							
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.	`G		X	F		X	F										
+,,,Bb	,,Bb	,F	,Bb	Db.	F	Bb					X						`F		X	`Bb		X	
+,,,,G'	,,,G'	,F	,Bb	Db.	F	Bb									``C		X	`Bb			`F		
+,,C	,C	G	C	Eb~19	`G	`C	X		Eb~19		`G		`Bb~7	X	X								
+,Bb.	Bb.	G	C	Eb~19	`G	`C	`Bb~29		`B~31		`C	X	F										
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.					X												
+,,,F	,,F	,F	Ab.	C	F	`Ab.																	
+,,,F	,,F	,F	Ab.	C	F	`Ab.	X				`C		`F										5b (minor)
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.		X			`C		`Db.										
+,,,Bb	,,Bb	,F	,Bb	Db.	F	Bb	X		Bb		X		,G'										
+,,,,G'	,,,G'	,F	,Bb	Db.	F	Bb				X									`C#~17	X	`C		
+,,C	,C	G	C	`Eb.	`G	`C	X				`C		``Eb.		X								
+,Bb.	Bb.	G	C	`Eb.	`G	`C		X	`Db.		X		`C										
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.					X												
+,,G	,G	,F	Ab.	C	F	`Ab.											``G	X	``Bb~7		``Ab.		
+,,,F	,,F	,F	Ab.	C	F	`Ab.	X				`C		``Ab.		X								
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.	X		``Ab.	`Bb	``Ab.		``G										
+,,,Bb	,,Bb	,F	,Bb	Db.	F	Bb	`F		``Eb.		`Db.		Bb										
+,,,,G'	,,,G'	,F	,Bb	Db.	F	Bb			X										`F		`E'	X	
+,,C	,C	G	C	Eb~19	`G	`C	X				``G		`Eb~19										
+,Bb.	Bb.	G	C	Eb~19	`G	`C	X		`D'~7			X	`C										
+,,Ab.	,Ab.	,F	Ab.	C	F	`Ab.			X														
+,,,F	,,F	,F	C	F	`G	`C																	
+,,,F	,,F	,F	,A'	C	F	A'	X				`C		`F										5a (major)
+,,,A'	,,A'	,F	C	F	A'	`C			X		`C		D'										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb	X		Bb		X		,G'										
+,,,,G'	,,,G'	,F	,D'	F	Bb	D'					X				``C	X	``G	`F	X	`F	`A'	``G	
+,,C	,C	G	C	E'	`G	`C	X				`C		`E'		X								
+,,Bb~7	,Bb~7	G	E'	`G	`C	`E'		X	``D		X		`C										
+,,,A'	,,A'	,F	,A'	C	F	A'					X						`A'	X		`Bb		X	
+,,G	,G	,F	C	F	A'	`C									``C		X	`F	X	`F	`Bb	`A'	
+,,,F	,,F	,F	,A'	C	F	A'	X				`C		`A'			X							
+,,,A'	,,A'	,F	C	F	A'	`C			X		``G		`F										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb	X		`E'		X		D'										
+,,,,G'	,,,G'	,F	,D'	F	Bb	D'				X					``C		X	`F		`F	`Bb	``G	
+,,C	,C	G	C	E'	`G	`C	X				``Ab~13		``G		X								
+,,Bb~7	,Bb~7	G	E'	`G	`C	`E'		X	`F#~11		X		`E'	X									
+,,,A'	,,A'	,F	,A'	C	F	A'	`F		X								`A'	`Bb	``C	X	``C		
+,,G	,G	,F	C	F	A'	`C										X							
+,,,F	,,F	,F	,A'	C	F	A'	X				`C		`A'										
+,,,A'	,,A'	,F	C	F	A'	`C		X	`A'	`Bb	`A'		``G										
+,,,Bb	,,Bb	,F	,Bb	,D'	F	Bb	`F		`E'		D'		`Bb										
+,,,,G'	,,,G'	,F	,D'	F	Bb	D'				X					``C	X	``G	`F	X	`F	`A'	``G	
+,,C	,C	G	C	E'	`G	`C	X				``Ab~13		``G		X								
+,,Bb~7	,Bb~7	G	E'	`G	`C	`E'		X	`F#~11		X		`E'	X									
+,,C	,C	G	C	E'	`G	`C					``B'		``Bb~7						`Ab~13		`G		
+,,Bb~7	,Bb~7	G	E'	`G	`C	`E'		X	``Ab~13		X		``G	X		X	F#~11		X		E'	X	
+,,C	,C	G	C	E'	`G	`C					```D		``C						``Ab~13		``G		
+,,Bb~7	,Bb~7	G	E'	`G	`C	`E'		X	``B'		X		``Bb~7			X	`F#~11		X		`E'		
+,,,A'	,,A'	,F	,A'	C	F	A'	`A'				X				`F		`A'	`B~11	``C	X	``Db~13	X	
+,,G	,G	,F	C	F	A'	`C									``Eb~7		``Eb~29	X	``E'		``E~61	X	
+,,,F	,,F	,F	,Bb	C	F	Bb									``E~31	`E#'''	```F~7	``F~127	``F				END
+,,,F	,,F	,F	G	C	F	`G										X							
+,,,F	,,F	,F	,A'	C	F	A'																	
+,,,F	,,F	,F	,A'	C	F	A'	,A'				X				F				X				FINISH on 1st beat
