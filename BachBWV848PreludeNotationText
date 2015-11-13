@@ -1,0 +1,170 @@
+DR, Nov 2015: I am aware this format doesn't look great, however I'm not sure how else to upload it on GitHub - any suggestions?
+Format is 3 rows 1 col per note: numerator, denominator, MIDI note name.
+The numerator and denominator specify comma deviations from (Pythagorean) MIDI pitches.
+
+NOTE: These are the local note names. There also exist some commas which link specific bars together (the first is at bar 31 to bar 32).
+There are four bars (24 beats) per row. Each bar is 6 beats.
+
+
+5				5														5		5		5	
+																							
+E5	C5	G4	C5	E5	C5	F5	C5	F5	C5	F5	C5	G5	C5	G5	C5	G5	C5	A5	C5	A5	C5	A5	C5
+						5						5											
+																							
+C3				C4		D3				C4		E3				C4		F3				C4	
+						7	5		5	7		5			5	5			5			5	5
+																							
+G5	C5	G5	C5	G5	C5	F5	E5	D5	E5	F5	D5	E5	D5	C5	D5	E5	C5	D5	E5	D5	C5	B4	A4
+5										5										5	5		5
+																							
+E3				C4		D3				B3		C3				C4		T		B3	A3	G3	A3
+						5						5											
+																							
+G4				G5		A4				G5		B4				G5		C5				G5	
+5				5														5		5		5	
+																							
+B3	G3	D3	G3	B3	G3	C4	G3	C4	G3	C4	G3	D4	G3	D4	G3	D4	G3	E4	G3	E4	G3	E4	G3
+5										5													
+																				5			
+B4				G5		A4				F#5		G4				G5		T		F5	E5	D5	E5
+						7	5		5	7		5				5					7		
+																			5			5	
+D4	G3	D4	G3	D4	G3	C4	B3	A3	B3	C4	A3	B3	A3	G3	A3	B3	G3	A3	Bb3	A3	G3	F3	E3
+																							
+5				5														5		5		5	
+F5	D5	A4	D5	F5	D5	G5	D5	G5	D5	G5	D5	A5	D5	A5	D5	A5	D5	Bb5	D5	Bb5	D5	Bb5	D5
+																							
+						7						5											
+D3				D4		E3				D4		F3				D4		G3				D4	
+						7				7											7		
+							5		5			5				5			5			5	
+A5	D5	A5	D5	A5	D5	G5	F5	E5	F5	G5	E5	F5	E5	D5	E5	F5	D5	E5	F5	E5	D5	C5	B4
+										5													
+5																				5			
+F3				D4		E3				C#4		D3				D4		T		C4	B3	A3	B3
+																							
+						7						5											
+A4				A5		B4				A5		C5				A5		D5				A5	
+																							
+5				5														5		5		5	
+C4	A3	E3	A3	C4	A3	D4	A3	D4	A3	D4	A3	E4	A3	E4	A3	E4	A3	F4	A3	F4	A3	F4	A3
+										5													
+5																				5			
+C5				A5		B4				G#5		A4				A5		T		G5		F#5	
+						7				7								5				5	
+							5		5			5				5					7		
+E4	A3	E4	A3	E4	A3	D4	C4	B3	C4	D4	B3	C4	B3	A3	B3	C4	A3	D#4	C#4	B3	C#4	D#4	B3
+																		5				5	
+5		5		5				5				5				5					7		
+G5		G4		G5		T		F5		E5		F5	E5	D5	E5	F5	D5	G#5	F#5	E5	F#5	G#5	E5
+						5				5													
+	25				5				7											5			
+E4	Eb4	E4	F#4	E4	D4	C#4	B3	A3	B3	C#4	A3	D4		D3		D4		T		C4		B3	
+						5			5	5													
+	25				5															5			
+A5	Ab5	A5	B5	A5	G5	F#5	E5	D5	E5	F#5	D5	G5		G4		G5		T		F5		E5	
+								5				5				5		5				5	
+5		5		5																	7		
+C4		C3		C4		T		B3		A3		B3	A3	G3	A3	B3	G3	C#4	B3	A3	B3	C#4	A3
+								5				5				5		5				5	
+5		5		5																	7		
+F5		F4		F5		T		E5		D5		E5	D5	C5	D5	E5	C5	F#5	E5	D5	E5	F#5	D5
+						5			5	5													
+	25				5															5			
+D4	Db4	D4	E4	D4	C4	B3	A3	G3	A3	B3	G3	C4		C3		C4		T		Bb3		A3	
+						5			5	5								5					
+	25				5																		
+G5	Gb5	G5	A5	G5	F5	E5	D5	C5	D5	E5	C5	F4				F5		G4				F5	
+								5				5				5							
+5		5		5																			
+Bb3		Bb2		Bb3		T		A3		G3		A3	F3	C3	F3	A3	F3	Bb3	F3	Bb3	F3	Bb3	F3
+5												5										5	
+																							
+A4				F5		Bb4				F5		A4				F5		G4				E5	
+						5		5		5								7	5		5	7	
+																							
+C4	F3	C4	F3	C4	F3	D4	F3	D4	F3	D4	F3	C4	F3	C4	F3	C4	F3	Bb3	A3	G3	A3	Bb3	G3
+								5	5		5	5				5							
+																							
+F4				F5		T		E5	D5	C5	D5	E5	C5	G4	C5	E5	C5	F5	C5	F5	C5	F5	C5
+5				5			5			5	5							5					
+																							
+A3	G3	F3	G3	A3	F3	G3	A3	G3	F3	E3	D3	C3				C4		D3				C4	
+						5		5		5								7	5		5	7	
+																							
+G5	C5	G5	C5	G5	C5	A5	C5	A5	C5	A5	C5	G5	C5	G5	C5	G5	C5	F5	E5	D5	E5	F5	D5
+5												5										5	
+																							
+E3				C4		F3				C4		E3				C4		D3				B3	
+5			5	5			5			5		5						5					
+																							
+E5	D5	C5	D5	E5	C5	D5	E5	D5	C5	B4	A4	B4	G4	X	G4	X	G4	B4	G4	X	G4	X	G4
+						7		5						7						7			
+																							
+C3				C4		F3		E3		D3		G3		F4		D4		G3		F4		D4	
+												7						7					
+																							
+C5	G4	X	G4	X	G4	C5	G4	X	G4	X	G4	F5	G4	X	G4	X	G4	F5	G4	X	G4	X	G4
+		5						5								5						5	
+																							
+G3		E4		C4		G3		E4		C4		G3		D4		B3		G3		D4		B3	
+5						5																	
+												17	7		7		7	17	7		7		7
+E5	G4	X	G4	X	G4	E5	G4	X	G4	X	G4	Gb5	A4	X	A4	X	A4	Gb5	A4	X	A4	X	A4
+		5						5															
+														5						5			
+G3		E4		C4		G3		E4		C4		G3		Eb4		C4		G3		Eb4		C4	
+	5		5		5		5		5		5								5				35
+																							
+G5	B4	X	B4	X	B4	G5	B4	X	B4	X	B4	G5	C5	X	G4	X	C5	X	E5	X	G5	X	A5
+				5		7				5		5		5						5		35	
+																							
+G3		D4		B3		F3		D4		B3		E3		E4		C4		G3		E3		D3	
+17		7						7	17		7												7
+			5				5								5						5		
+A#5	A5	G5	F5	E5	D5	E5	F5	G5	A#5	A5	G5	A5	D5	X	F4	X	A4	X	D5	X	F5	X	G5
+5						5				7												7	
+												5						5					
+C#3		E3		A3		C#4		E4		G4		F4		D4		A3		F3		D3		C3	
+17		7						7	17		7								7		7		
+			5				5								5				5				
+G#5	G5	F5	Eb5	D5	C5	D5	Eb5	F5	G#5	G5	F5	G5	C5	X	Eb5	X	C5	X	Ab4	X	F4	X	D5
+5						5				7								7				5	
+												5				5							
+B2		D3		G3		B3		D4		F4		Eb4		C4		Ab3		F3		D4		B3	
+							7		7			5						5					
+			5				5																
+X	G4	X	Eb4	X	C5	X	Ab4	X	F4	X	D4	B3	G3	X	G3	X	G3	B3	G3	X	G3	X	G3
+						7				5				7						7			
+5				5																			
+Eb3		C4		Ab3		F3		D3		B2		G2		F3		D3		G2		F3		D3	
+												7						7					
+																							
+C4	G3	X	G3	X	G3	C4	G3	X	G3	X	G3	F4	G3	X	G3	X	G3	F4	G3	X	G3	X	G3
+		5						5								5						5	
+																							
+G2		E3		C3		G2		E3		C3		G2		D3		B2		G2		D3		B2	
+5						5																	
+												17	7		7		7	17	7		7		7
+E4	G3	X	G3	X	G3	E4	G3	X	G3	X	G3	Gb4	A3	X	A3	X	A3	Gb4	A3	X	A3	X	A3
+		5						5															
+														5						5			
+G2		E3		C3		G2		E3		C3		G2		Eb3		C3		G2		Eb3		C3	
+			7	17	5				5		11	5		7		5							
+																							
+X			F3	G#3	B3	X			A4	C5	E5	B4	D5	F5	D5	B4	G4	T					
+	5						11	13										7		5		5	
+																							
+G2	B2	D3				C4	E4	Gb4				G2						F4	D4	B3	G3	B3	D4
+5				5											5		5						
+																							
+E4	G4	C5	G4	E4	C4	T						X	C5	G4	E4	D4	B4	C5					
+						5	13	11		11	13			5		7							
+																							
+G3						A3	Gb3	E3	C3	E3	Gb3	G2	G3	E3	C3	F3	G2	C2					
+																							
+																							
+x																							
+																							
+																							
+x																							
