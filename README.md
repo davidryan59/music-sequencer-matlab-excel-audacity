@@ -1,28 +1,24 @@
-# Music-Sequencer
-Files for Just Intonation music sequencer
+# Scope of Project
+Creating a Music Sequencer using:
+- Excel for sequencing the notes, into CSV format
+- MATLAB (or Octave, its free!) for turning CSV data
+  into a series of .wav audio files, 1 for each channel
+- Audacity for mixing the different .wav files together.
 
-Components of current Just Intonation music sequencer used by David Ryan:
+# What I did
+The Excel and MATLAB have been developed across approx 2015-2017.
 
-1) JI notation system using ASCII text
-2) Excel spreadsheet
-3) CSV sequence file
-4) Octave (or MATLAB) code to turn CSV into audio output
-5) Audio output in terms of .mp3 or .wav files
+Although this repo has been updated extensively in Oct 2017,
+my original example files are retained, in 'original_examples' directory.
 
+# Tools I used
+- Excel (sequencing)
+- MATLAB (processing)
+- Audacity (post-processing)
 
-NOTE 17th JUNE 2015:
-
-This GitHub repository is intended to allow public shared work and collaboration on my Just Intonation music sequencer. The files will uploaded soon... Soon means in the next few months, since with full time work I don't have a lot of time to devote to writing chip-tune music... But it will happen! DR
-
-
-NOTE 3rd Sept 2015
-
-JI notation paper available now at: http://arxiv.org/pdf/1508.07739.pdf
-
-Some example notation text files have been uploaded here.
-
-Some example sequenced files (for input to sequencer_v08) uploaded here
-
-The music sequencer (MATLAB/Octave code) uploaded.
-
-Note - this sequencer requires a whole bunch of function files to be uploaded too, and I haven't yet succeeded in uploading a whole directory at once! DR
+# Result
+Lots of music files!
+You can listen to them at :
+https://soundcloud.com/daveryan23/tracks
+Also see the notation paper at:
+https://arxiv.org/abs/1612.01860

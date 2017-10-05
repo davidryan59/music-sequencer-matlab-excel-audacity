@@ -1,19 +1,19 @@
 ## Copyright (C) 2017 David Ryan
-## 
+##
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 3 of the License, or
 ## (at your option) any later version.
-## 
+##
 ## This program is distributed in the hope that it will be useful,
 ## but WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ## GNU General Public License for more details.
-## 
+##
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-## -*- texinfo -*- 
+## -*- texinfo -*-
 ## @deftypefn {Function File} {@var{retval} =} sequencer10readCSV (@var{input1}, @var{input2})
 ##
 ## @seealso{}
@@ -22,11 +22,11 @@
 ## Author: David Ryan <davidryan@David-Ryans-MacBook-Air.local>
 ## Created: 2017-04-27
 
-function [retval] = sequencer11(inputFilenameStub,inputDir,outputDir,fileTag)
+function [retval] = sequencer12(inputFilenameStub,inputDir,outputDir,fileTag)
 
 % IMPROVE: display date and time here?
 tic;
-retval = 'sequencer11 failed';
+retval = 'sequencer12 failed';
 maxChannels = 12;    % Current Excel spreadsheet deals with up to 12 channels
 
 % Full paths for input and output
@@ -218,13 +218,13 @@ endif
 % Loop over the channels
 channelsWritten = 0;
 for chan1=1:channels
-  
+
   % EACH CHANNEL IS PROCESSED ENTIRELY SEPARATELY
   % IT IS THE USER'S RESPONSIBILITY TO CHECK
   % THEY ARE SYNCHRONISED!
-  
+
   channelIndex = (vectChannel==chan1);
-  
+
   vectControlChan = vectControl(channelIndex);
   %vectChannelChan = vectChannel(channelIndex);
   vectLengthBeatsChan = vectLengthBeats(channelIndex);
@@ -235,64 +235,64 @@ for chan1=1:channels
   vectAmpTiedToPrevBoolChan = vectAmpTiedToPrevBool(channelIndex);
   vectAmpEndAtNextBoolChan = vectAmpEndAtNextBool(channelIndex);
   vectStereoPosChan = vectStereoPos(channelIndex);
-  vectStereoInterpTypeChan = vectStereoInterpType(channelIndex);  
+  vectStereoInterpTypeChan = vectStereoInterpType(channelIndex);
   % These should all be the same length!
   lenChannel = length(vectControlChan);
-  
+
   stereoChannel = (0 < sum(abs(vectStereoPosChan)));   % If any dBR values supplied, make stereo track, otherwise mono.
-  
+
   vectBeatEnd = cumsum(vectLengthBeatsChan);
   vectBeatStart = [0;vectBeatEnd(1:end-1)];
-  totalBeatsInChannel = vectBeatEnd(end);  
-  
+  totalBeatsInChannel = vectBeatEnd(end);
+
   % Beat 0 maps to sample 1
   % Beat N maps to sample 1 + samplesPerBeat * N
-  
+
   totalSamples = 1 + ceil(totalBeatsInChannel * samplesPerBeatDecimal);
   sampleFreqVect = zeros(totalSamples,1);
   sampleAmpVect = zeros(totalSamples,1);
   if stereoChannel
     sampleStereoVect = zeros(totalSamples,1);
   endif
-  
+
   % DEFAULT VALUES for Channel parameters
   % These can be adjusted mid-track by control messages
-  
+
   % AMPLITUDE PARAMETERS
   % Parameters affecting exponential (for linear interpolation) decay of note
   dBpeakSeconds = 0.02;                         % s - Seconds to stay at peak amplitude
   dBdecayRate = 20;                             % dB/s - amplitude decay rate at ref. freq. - can set to 0 for no decay
   dBdecayRefFreq = 256;                         % Hz - reference frequency (256Hz recommended)
-  dBdecayRefIndex = 0.5;                        % Specifies how much quicker freqs higher than ref freq can decay  
+  dBdecayRefIndex = 0.5;                        % Specifies how much quicker freqs higher than ref freq can decay
   % Parameters affecting tremolo
-  tremoloPeriodBeats = 3;                       % Default of peak-trough-peak taking 3 beats 
+  tremoloPeriodBeats = 3;                       % Default of peak-trough-peak taking 3 beats
   tremoloDepthDB = 1.5;                         % 0 is off. Positive value is max reduction in amplitude DBs
   % NOT YET IMPLEMENTED: tremoloType - currently Sawtooth only - could be Square, Triangle, etc?
-  
+
   % FREQUENCY PARAMETERS
   noiseSamples = 20;                            % Write noise onto frequency vector for this number of samples (keep it small)
-  
+
   % FILTERING PARAMETERS
   filterType = 0;         % No filter by default
-    
+
   % WAVEFORM PARAMETERS
   voiceType = 0;     % Greater than 0 chooses a custom voice, and overrides waveType
   waveType = 1;
   % 0=Sine, 1=Sawtooth, 2=Square, 3=Triangle, 4=Trapezium, 5=5Square, 6=Random
-  
+
   muteChannel = 0;   % Play channel by default
-  notesWritten = 0;  
+  notesWritten = 0;
   prevAmpDB = 0;
   prevTremoloPhase = 0;
   for row1=1:lenChannel                % This Row
     row2 = min(lenChannel,row1+1);     % Next Row
     tempWriteNote = 1;                    % Only write a note if this variable stays 1
-    
+
     % EACH ROW REPRESENTS:
     % 1) A control message (Control<0)
     % 2) A normal note (Control=0)
-    % 3) An altered note (Control>0)  (This was mainly Sequencer 10 - in Sequencer 11 its done via extra columns)    
-    
+    % 3) An altered note (Control>0)  (This was mainly Sequencer 10 - from Sequencer 11 onwards its done via extra columns)
+
     % SETUP VARIABLES FOR THIS NOTE
     % Timing and Sample Length variables
     tempBeatStart = vectBeatStart(row1);
@@ -303,49 +303,49 @@ for chan1=1:channels
     noteTimeRangeVect = (1/sampleRate).*(sampleRangeVect-sampleStart);
     sampleLength = length(sampleRangeVect);
     noteLengthSeconds = noteTimeRangeVect(end);
-    
-    % Frequency variables    
+
+    % Frequency variables
     tempFreq = abs(vectFreqOrParamChan(row1));
     tempNextFreq = abs(vectFreqOrParamChan(row2));
     tempInterpTypeFreq = vectFreqInterpTypeChan(row1);
-    
-    % Control variables (less important in sequencer11)
+
+    % Control variables (less important from sequencer11 onwards)
     tempControl = vectControlChan(row1);
     tempParam = vectFreqOrParamChan(row1);
     tempAbsParam = abs(tempParam);
-    
+
     % Stereo variables
     tempStereoPos = vectStereoPosChan(row1);         % -100 is left, +100 is right
-    tempNextStereoPos = vectStereoPosChan(row2);     % Needed for tied notes - stereo position will move! 
+    tempNextStereoPos = vectStereoPosChan(row2);     % Needed for tied notes - stereo position will move!
     tempInterpTypeStereo = vectStereoInterpTypeChan(row1);
-    
+
     % AMPLITUDE VARIABLES
-    
+
     % Decay rate (as power-law function of frequency)
     if dBdecayRefFreq==0
-      modifiedDecayRate = 0;        
+      modifiedDecayRate = 0;
     else
       modifiedDecayRate = dBdecayRate.*((0.01+tempFreq)/dBdecayRefFreq).^dBdecayRefIndex;
     endif
-    
+
     % Amplitude interpolation and control variables
     tempInterpTypeAmp = vectAmpInterpTypeChan(row1);
     tiedNote = (abs(vectAmpTiedToPrevBoolChan(row1))>0.5);       % 0 = untied, 1 = tied
     decayingNote = (abs(vectAmpEndAtNextBoolChan(row1))<0.5);    % 0 = interp to next amp, 1 = interp to decayed amp
-    
+
     % Amplitude - deal with variables related to tied notes
     if tiedNote
       % If a tied note, re-use previous tremolo phase, no peak amplitude section
       %prevTremoloPhase = prevTremoloPhase;    % (Do nothing to this!)
       tempPeakSeconds = 0;
-      tempNonPeakSeconds = noteLengthSeconds; 
+      tempNonPeakSeconds = noteLengthSeconds;
     else
       % If an initial note, reset tremolo phase, have a peak amplitude section
       prevTremoloPhase = 0;
       tempPeakSeconds = min(noteLengthSeconds,dBpeakSeconds);
-      tempNonPeakSeconds = noteLengthSeconds-tempPeakSeconds; 
+      tempNonPeakSeconds = noteLengthSeconds-tempPeakSeconds;
     endif
-    
+
     % sampleRangeVect has length sampleLength - need to split into 2
     if noteLengthSeconds>0
       splitPos = round(sampleLength.*(tempPeakSeconds./noteLengthSeconds));
@@ -356,8 +356,8 @@ for chan1=1:channels
     sampleRangePeakVect = sampleRangeVect(1:splitPos);
     sampleRangeNonPeakVect = sampleRangeVect(splitPos:end);
     sampleLengthPeak = length(sampleRangePeakVect);
-    sampleLengthNonPeak = length(sampleRangeNonPeakVect);    
-    
+    sampleLengthNonPeak = length(sampleRangeNonPeakVect);
+
     % Amplitude - set starting point (of non-peak period)
     ampDBStartFromThisNote = vectAmplitudeDBChan(row1);
     ampDBStartFromPrevNote = prevAmpDB;     % defined on previous loop or before loop
@@ -366,7 +366,7 @@ for chan1=1:channels
     else
       tempAmpDB = ampDBStartFromThisNote;
     endif
-    
+
     % Amplitude - set ending point
     ampDBEndFromDecay = tempAmpDB - modifiedDecayRate.*tempNonPeakSeconds;
     ampDBEndFromNextNote = vectAmplitudeDBChan(row2);
@@ -374,8 +374,8 @@ for chan1=1:channels
       tempNextAmpDB = ampDBEndFromDecay;
     else
       tempNextAmpDB = ampDBEndFromNextNote;
-    endif  
-    
+    endif
+
     % Handle transient channel control parameters - use either Param or AbsParam
     % Is it a rest?
     if tempControl<0; tempWriteNote=0; endif;   % Any negative control number means note doesn't play
@@ -389,36 +389,36 @@ for chan1=1:channels
     if tempControl==-151; tremoloDepthDB=tempAbsParam; endif;
     % Frequency noise
     if tempControl==-200; noiseSamples=tempAbsParam; endif;
-        
+
     % Filter selection
     if tempControl==-350; filterType=round(tempAbsParam); endif;
     % Waveform selection
     if tempControl==-450; voiceType=round(tempAbsParam); endif;
     if tempControl==-400; waveType=round(tempAbsParam); endif;
     % Mute Channel (positive value) or play channel (blank or 0)
-    if tempControl==-500; muteChannel=tempAbsParam; endif;    
+    if tempControl==-500; muteChannel=tempAbsParam; endif;
     if tempControl==-999; break; endif;                 % Ignore all remaining notes on channel
-    
+
     if muteChannel > 0
       % Stop writing notes to this channel if a mute instruction received
       % (Go to next channel using 'break')
-      break    
+      break
     endif
-    
+
     if and(tempWriteNote==1,sampleLength>1,tempFreq>0)
       % Notes are only written if these hold:
       % - not a control row
       % - positive length
       % - positive frequency
-      
+
       % Write stereo vector
       if stereoChannel
         sampleStereoVect(sampleRangeVect) = interpMethods(sampleLength,tempStereoPos,tempNextStereoPos,tempInterpTypeStereo);
       endif
-      
+
       % Write frequency vector
       sampleFreqVect(sampleRangeVect) = freqMult.*interpMethods(sampleLength,tempFreq,tempNextFreq,tempInterpTypeFreq);
-      
+
       % Modify frequency vector to give small noise
       % at start of note by raising frequency for a small number of samples
       % (Don't do this for a range of conditions in and() statement below)
@@ -428,12 +428,12 @@ for chan1=1:channels
         rand0 = 2.5;      % Want frequency to be deterministic. Take the average value of rand() here.
         sampleFreqVect(sampleRangeVect(r0)) = rand0.*sampleFreqVect(sampleRangeVect(r0));
       endif
-      
+
       % Write amplitude vector (peak period)
       if sampleLengthPeak>0
         sampleAmpVect(sampleRangePeakVect) = tempAmpDB;
       endif
-      
+
       % Write amplitude vector (non-peak period)
       if sampleLengthNonPeak>0
         %% DEBUG
@@ -442,13 +442,13 @@ for chan1=1:channels
         %display(sampleLengthNonPeak);
         sampleAmpVect(sampleRangeNonPeakVect) = interpMethods(sampleLengthNonPeak,tempAmpDB,tempNextAmpDB,tempInterpTypeAmp);
       endif
-      
+
       % Final amplitude (for next note) should
       % take into account time at peak amplitude
       % but ignore tremolo (i.e. take the final amplitude before subtracting tremolo)
       % Take from actual vector, since won't be end value if flat interpolation used.
       prevAmpDB = sampleAmpVect(sampleRangeVect(end));
-      
+
       % Modify amplitude vector over both periods if there is a tremolo specified
       % If a period specified, subtract tremolo vector from amplitude vector
       tremoloAmpVect = 0;
@@ -459,30 +459,30 @@ for chan1=1:channels
         % Sawtooth tremolo. Standard sawtooth ramps up, this one is inverted to ramp down.
         tremoloAmpVect = tremoloDepthDB .* (0.5 + 0.5 * waveformSawtooth(prevTremoloPhase + (beatsPerSecondDecimal/tremoloPeriodBeats).*noteTimeRangeVect));
         % Store the final phase for reference in the next row/note
-        prevTremoloPhase = prevTremoloPhase + (beatsPerSecondDecimal/tremoloPeriodBeats).*noteTimeRangeVect(end); 
+        prevTremoloPhase = prevTremoloPhase + (beatsPerSecondDecimal/tremoloPeriodBeats).*noteTimeRangeVect(end);
       endif
       sampleAmpVect(sampleRangeVect) = sampleAmpVect(sampleRangeVect) - tremoloAmpVect;
-      
+
       % Finished modifying freq, amp, stereo vectors!
       % Increment count of notes written, and go to next row/note
       notesWritten++;
     endif
-    
+
   endfor
-  
+
   % Ignore channel if it has no notes
   if notesWritten<1
     % No notes written on this channel - iterate to next channel
     %display(['Channel ' num2str(chan1) ' empty']);
     continue
   endif
-  
+
   % Ignore channel if a mute instruction received
   %display([chan1 muteChannel]);
   if muteChannel > 0
     continue
   endif
-  
+
   % Deal with case where channel 1 is comma shift information
   % This causes microtonal retuning in sections
   if chan1==1
@@ -492,7 +492,7 @@ for chan1=1:channels
       continue
     elseif commaChan1Status==0
       % Make a dummy comma vector here, and process the channel as normal
-      commaFreqVect = ones(length(sampleFreqVect),1); 
+      commaFreqVect = ones(length(sampleFreqVect),1);
       channelsWritten++;
     else
       % Set the comma vector here.
@@ -535,31 +535,31 @@ for chan1=1:channels
     endif
     channelsWritten++;
   endif
-  
-  
+
+
   % Frequencies now set up
   %plot(sampleFreqVect);
-  
+
   % sampleAmpVect in relative dB - change to be negative only (0dB = amplitude 1)
   maxAmpDB = max(sampleAmpVect);
   sampleAmpVect = sampleAmpVect - maxAmpDB;  % -infinity to 0 dB now
   sampleAmpVect = 10.^(sampleAmpVect/20);    % pure amplitude now
   %plot(sampleAmpVect);
-  
+
   % Anywhere frequency is zero, overwrite amplitude with zero
   sampleAmpVect(abs(sampleFreqVect)<0.001) = 0;
   %plot(sampleAmpVect);
-  
+
   % Integrate frequency to obtain input vector for waveform
   sampleCumulFreqs = cumsum(sampleFreqVect.*commaFreqVect(1:length(sampleFreqVect)))./sampleRate;
   %plot(sampleCumulFreqs);
-  
+
   % Apply waveform here. Firstly via voiceType, alternatively via waveType
   % First, if there is a valid voiceType then use additive synth via sine/saw/square partials
   if and(0<voiceType,voiceType<=maxVoiceType)
     partialsMx = voiceStoreCell{voiceType};
   else
-    partialsMx = zeros(0,1);  
+    partialsMx = zeros(0,1);
   endif
   if and(size(partialsMx,1)>=1,size(partialsMx,2)>=2)
     % Valid voiceType partialsMx - use for additive synth
@@ -582,12 +582,12 @@ for chan1=1:channels
         waveOutputVect = waveform5Square(sampleCumulFreqs);
       case 6     % Square resampling of a random sample, based on input freqs
         waveOutputVect = waveformRandom(sampleCumulFreqs,randSample);
-      otherwise 
+      otherwise
         % Use default voice (Case 1 = Sawtooth)
         waveOutputVect = waveformSawtooth(sampleCumulFreqs);
-    endswitch  
+    endswitch
   endif
-  
+
   % Choose a filter
   if and(1<=filterType,filterType<=maxFilterNumber)
     filterSetpointMx = filterStoreCell{filterType};
@@ -598,47 +598,47 @@ for chan1=1:channels
   if or(size(filterSetpointMx,1)<1,size(filterSetpointMx,2)<2)
     filterSetpointMx = [1 -120; 15 0; sampleRate 0];     % Filter out inaudibly low noise
   endif
-  
-  if !stereoChannel 
-    
+
+  if !stereoChannel
+
     % MONO CASE
     stereoText = 'in mono';
-    
+
     % Apply amplitudes and padding to waveform
     waveOutputVect = [padZerosBefore;sampleAmpVect.*waveOutputVect;padZerosAfter];
-    
-    % Do the filter    
+
+    % Do the filter
     waveOutputVect = filterFromSetpoints(waveOutputVect,sampleRate,filterSetpointMx);
-    
+
     % Fade to zero in padding sections
     % by -80 dB (for 16 bit audio max needed is 96dB)
     waveOutputVect = fadeStartAndEnd(waveOutputVect,sampleZerosBefore,sampleZerosAfter,-80);
-    
+
   else
-    
+
     % STEREO CASE
     stereoText = 'in stereo';
-    
+
     stereoAmpVects = stereoAmplitudeFromPercent(sampleStereoVect);
     % Input is Nx1 vect of stereo positions
     % -100 for L, 0 for M, +100 for R
     % Output is Nx2 matrix of amplitudes in L, R channels
-    
+
     waveOutputVectL = [padZerosBefore;(stereoAmpVects(:,1).*sampleAmpVect).*waveOutputVect;padZerosAfter];
     waveOutputVectL = filterFromSetpoints(waveOutputVectL,sampleRate,filterSetpointMx);
     waveOutputVectL = fadeStartAndEnd(waveOutputVectL,sampleZerosBefore,sampleZerosAfter,-80);
-    
+
     waveOutputVectR = [padZerosBefore;(stereoAmpVects(:,2).*sampleAmpVect).*waveOutputVect;padZerosAfter];
     waveOutputVectR = filterFromSetpoints(waveOutputVectR,sampleRate,filterSetpointMx);
     waveOutputVectR = fadeStartAndEnd(waveOutputVectR,sampleZerosBefore,sampleZerosAfter,-80);
-    
+
     waveOutputVect = [waveOutputVectL waveOutputVectR];
-    
+
   endif
-  
+
   % Normalise amplitude to either 1 or 1/channels (from volumeConst earlier)
   waveOutputVect = volumeConst.*waveformNormalise(waveOutputVect);
-  
+
   % Export it to file
   chanText = num2str(chan1);
   if chan1<10
@@ -647,7 +647,7 @@ for chan1=1:channels
   outputPathAndFileWAV = [outputDir outputFilenameStub '-C' chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
-  
+
 endfor
 
 % Plot waveform (on last channel)
@@ -656,7 +656,7 @@ endfor
 
 % Provide suitable output
 display(['Time taken: ' num2str(toc) 's']);
-retval = 'sequencer11 succeeded';
+retval = 'sequencer12 succeeded';
 
 if channelsWritten>0
   % Make a copy of the CSV input file alongside output WAVs
