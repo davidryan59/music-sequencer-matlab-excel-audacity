@@ -16,9 +16,18 @@ my original example files are retained, in 'original_examples' directory.
 - MATLAB (processing)
 - Audacity (post-processing)
 
+# To run
+- Summary: use run_seq12.m to setup inputs and outputs correctly,
+  and run the sequencer12.m
+- Input/output directories also needed
+- Excel in the input directory
+- Find the outputted .wav files in the output directory
+
 # Result
-Lots of music files!
-You can listen to them at :
-https://soundcloud.com/daveryan23/tracks
-Also see the notation paper at:
-https://arxiv.org/abs/1612.01860
+I made many music files with this sequencer (or prev versions v10, v11).
+
+You can listen to my tracks at: https://soundcloud.com/daveryan23/tracks
+
+Also see the notation paper at: https://arxiv.org/abs/1612.01860
+
+Dr. David Ryan, October 2017
