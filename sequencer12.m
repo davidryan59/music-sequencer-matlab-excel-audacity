@@ -618,7 +618,7 @@ for chan1=1:channels
       case 3     % Triangle wave
         waveOutputVect = waveformTriangle(sampleCumulFreqs);
       case 4     % Trapezium wave (3/4 from triangle to square)
-        waveOutputVect = waveformTrapezium(sampleCumulFreqs);
+        waveOutputVect = waveformTrapeziumBasic(sampleCumulFreqs);
       case 5     % Modified Square wave with 3rd harmonic series removed
         waveOutputVect = waveform5Square(sampleCumulFreqs);
       case 6     % Square resampling of a random sample, based on input freqs
