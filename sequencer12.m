@@ -1,4 +1,4 @@
-## Copyright (C) 2017 David Ryan
+## Copyright (C) 2018 David Ryan
 ##
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -14,19 +14,31 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {@var{retval} =} sequencer10readCSV (@var{input1}, @var{input2})
+## @deftypefn {Function File} {@var{retval} =} sequencer12 (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
-## Author: David Ryan <davidryan@David-Ryans-MacBook-Air.local>
+## Author: David Ryan
 ## Created: 2017-04-27
 
-function [retval] = sequencer12(inputFilenameStub,inputDir,outputDir,fileTag)
 
-% IMPROVE: display date and time here?
+function [retval] = sequencer12(options)
+
 tic;
 retval = 'sequencer12 failed';
+
+% Extract input parameters from options struct
+inputFilenameStub = getParam(options, 'inputFilenameStub', 'sequencer12_output');
+inputDir = getParam(options, 'inputDir', '.');
+outputDir = getParam(options, 'outputDir', '.');
+fileTag = getParam(options, 'fileTag', '');
+
+% newVariable = getParam(options, 'newField', 'default value');
+display(options);
+
+% (Sample map section would have gone here)
+
 maxChannels = 12;    % Current Excel spreadsheet deals with up to 12 channels
 
 % Full paths for input and output
@@ -34,8 +46,8 @@ if length(fileTag)
   fileTag = ['-' fileTag];
 endif
 outputFilenameStub = [inputFilenameStub '-T' num2str(round(100000*now)) fileTag];
-inputPathAndFileCSV = [inputDir inputFilenameStub '.csv'];
-outputPathAndFileCSV = [outputDir outputFilenameStub '.csv'];
+inputPathAndFileCSV = [inputDir '/' inputFilenameStub '.csv'];
+outputPathAndFileCSV = [outputDir '/' outputFilenameStub '.csv'];
 display(['Input file: ' inputPathAndFileCSV]);
 display(['Output file: ' outputPathAndFileCSV]);
 
@@ -93,6 +105,10 @@ for k=1:datacols
       vectAmpTiedToPrevBool = colData;
     case 630
       vectAmpEndAtNextBool = colData;
+    case 640
+      vectNoteLengthMS = colData;
+    case 650
+      vectNoteLengthPercentMult = colData;
     case 700
       vectStereoPos = colData;
     case 710
@@ -233,7 +249,9 @@ for chan1=1:channels
   vectAmplitudeDBChan = vectAmplitudeDB(channelIndex);
   vectAmpInterpTypeChan = vectAmpInterpType(channelIndex);
   vectAmpTiedToPrevBoolChan = vectAmpTiedToPrevBool(channelIndex);
-  vectAmpEndAtNextBoolChan = vectAmpEndAtNextBool(channelIndex);
+  vectAmpEndAtNextBoolChan = vectAmpEndAtNextBool(channelIndex);      
+  vectNoteLengthMSChan = vectNoteLengthMS(channelIndex);
+  vectNoteLengthPercentMultChan = vectNoteLengthPercentMult(channelIndex);
   vectStereoPosChan = vectStereoPos(channelIndex);
   vectStereoInterpTypeChan = vectStereoInterpType(channelIndex);
   % These should all be the same length!
@@ -293,10 +311,33 @@ for chan1=1:channels
     % 2) A normal note (Control=0)
     % 3) An altered note (Control>0)  (This was mainly Sequencer 10 - from Sequencer 11 onwards its done via extra columns)
 
+    % Note length modifying variables
+    tempNoteLengthMS = vectNoteLengthMSChan(row1);
+    tempNoteLengthPercentMult = vectNoteLengthPercentMultChan(row1);    
+    
     % SETUP VARIABLES FOR THIS NOTE
     % Timing and Sample Length variables
     tempBeatStart = vectBeatStart(row1);
-    tempBeatEnd = vectBeatEnd(row1);
+    
+    
+    %% OLD (Pre-Feb 2018)
+    %tempBeatEnd = vectBeatEnd(row1);
+    
+    %% NEW (2018_02_19)
+    tempBeatsLength = vectLengthBeatsChan(row1);
+    if tempNoteLengthMS > 0
+      % Positive ms. Note is that amount of ms.
+      tempBeatsLength = beatsPerSecondDecimal * (tempNoteLengthMS/1000);
+    elseif tempNoteLengthMS < 0
+      % Negative ms. Deduct that number of ms from the note.
+      tempBeatsLength = max(0, tempBeatsLength - beatsPerSecondDecimal * (-tempNoteLengthMS/1000));
+    elseif tempNoteLengthPercentMult > 0
+      % Positive percent mult. Multiply by 0% to 100%. (If there is no next note, 110% has an effect)
+      tempBeatsLength = tempBeatsLength * (tempNoteLengthPercentMult/100);
+    end
+    tempBeatEnd = vectBeatStart(row1) + tempBeatsLength;
+    
+    
     sampleStart = 1 + round(tempBeatStart*samplesPerBeatDecimal);
     sampleEnd = 1 + round(tempBeatEnd*samplesPerBeatDecimal);
     sampleRangeVect = (sampleStart:sampleEnd)';
@@ -317,7 +358,7 @@ for chan1=1:channels
     % Stereo variables
     tempStereoPos = vectStereoPosChan(row1);         % -100 is left, +100 is right
     tempNextStereoPos = vectStereoPosChan(row2);     % Needed for tied notes - stereo position will move!
-    tempInterpTypeStereo = vectStereoInterpTypeChan(row1);
+    tempInterpTypeStereo = vectStereoInterpTypeChan(row1); 
 
     % AMPLITUDE VARIABLES
 
@@ -582,6 +623,8 @@ for chan1=1:channels
         waveOutputVect = waveform5Square(sampleCumulFreqs);
       case 6     % Square resampling of a random sample, based on input freqs
         waveOutputVect = waveformRandom(sampleCumulFreqs,randSample);
+      case 7     % White noise (independent of frequency)
+        waveOutputVect = waveformWhiteNoise(sampleCumulFreqs);
       otherwise
         % Use default voice (Case 1 = Sawtooth)
         waveOutputVect = waveformSawtooth(sampleCumulFreqs);
@@ -644,7 +687,7 @@ for chan1=1:channels
   if chan1<10
     chanText = ['0' chanText];
   endif
-  outputPathAndFileWAV = [outputDir outputFilenameStub '-C' chanText '.wav'];
+  outputPathAndFileWAV = [outputDir '/' outputFilenameStub '-C' chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
 
