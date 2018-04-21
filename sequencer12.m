@@ -552,7 +552,7 @@ for chan1=1:channels
         commaFreqVect0 = commaFreqVect;                                  % Unnormalised version for graphing
         commaFreqVect = commaFreqVect./smoothCommaVect;   % Remove the smoothed version for normalised version
         % ------
-        % DEBUG - Graphing only
+        % Plot graph of comma data
         timeVect = 1:length(commaFreqVect);
         timeVect = (1/sampleRate)*timeVect(:);
         plot(timeVect,1200.*log(commaFreqVect)./log(2),'b',timeVect,1200*log(smoothCommaVect)./log(2),'g',timeVect,1200.*log(commaFreqVect0)./log(2),'r');
@@ -560,10 +560,13 @@ for chan1=1:channels
         %display(commaFreqVect0(end-100:end)');
         %return
         % ------
+        commaTag = ['C' num2str(round(1000*commaChan1Status)) 'ms'];
         display(['Comma Channel 1 processed as commas normalised over ' num2str(round(10*commaChan1Status)/10) 's']);
       else
+        commaTag = ['UNC'];
         display('Comma Channel 1 processed as un-normalised commas');
       endif
+      outputFilenameStub = [outputFilenameStub '-' commaTag];
       % Comma channel now dealt with - continue to next channel
       continue
     endif
