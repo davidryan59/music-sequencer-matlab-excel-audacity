@@ -560,7 +560,7 @@ for chan1=1:channels
         %display(commaFreqVect0(end-100:end)');
         %return
         % ------
-        commaTag = ['C' num2str(round(1000*commaChan1Status)) 'ms'];
+        commaTag = ['NC' num2str(round(1000*commaChan1Status)) 'ms'];
         display(['Comma Channel 1 processed as commas normalised over ' num2str(round(10*commaChan1Status)/10) 's']);
       else
         commaTag = ['UNC'];
@@ -636,17 +636,24 @@ for chan1=1:channels
 
   % Choose a filter
   if and(1<=filterType,filterType<=maxFilterNumber)
-    filterSetpointMx = filterStoreCell{filterType};
+    freqFilterSetpointMx = filterStoreCell{filterType};
   else
-    filterSetpointMx = zeros(0,1);
+    freqFilterSetpointMx = zeros(0,1);
   endif
   % Deal separately with degenerate cases - should be at least 1 row and 2 columns
-  if or(size(filterSetpointMx,1)<1,size(filterSetpointMx,2)<2)
-    filterSetpointMx = [1 -120; 15 0; sampleRate 0];     % Filter out inaudibly low noise
+  if or(size(freqFilterSetpointMx,1)<1,size(freqFilterSetpointMx,2)<2)
+    freqFilterSetpointMx = [1 -120; 15 0; sampleRate 0];     % Filter out inaudibly low noise
   endif
-
+  
+  clipFilterSetpointMx = [1 0; 100 0; 1000 -10; 2000 -120];  % Prevent amp or stereoamp from clipping
+  % Remove high frequency info from amplitude vector
+  % to prevent clipping at start and end of notes
+  %sampleAmpVect = averageSmooth7point(sampleAmpVect);    % Doesn't remove enough!
+  sampleAmpVect = max(0, filterFromSetpoints(sampleAmpVect,sampleRate,clipFilterSetpointMx));
+  
+  
   if !stereoChannel
-
+    
     % MONO CASE
     stereoText = 'in mono';
 
@@ -654,28 +661,33 @@ for chan1=1:channels
     waveOutputVect = [padZerosBefore;sampleAmpVect.*waveOutputVect;padZerosAfter];
 
     % Do the filter
-    waveOutputVect = filterFromSetpoints(waveOutputVect,sampleRate,filterSetpointMx);
+    waveOutputVect = filterFromSetpoints(waveOutputVect,sampleRate,freqFilterSetpointMx);
 
     % Fade to zero in padding sections
     % by -80 dB (for 16 bit audio max needed is 96dB)
     waveOutputVect = fadeStartAndEnd(waveOutputVect,sampleZerosBefore,sampleZerosAfter,-80);
 
   else
-
+    
     % STEREO CASE
     stereoText = 'in stereo';
 
+    % Remove high frequency info from amplitude vector
+    % to prevent clipping at start and end of notes
+    %sampleStereoVect = averageSmooth7point(sampleStereoVect);    % Doesn't remove enough!
+    sampleStereoVect = filterFromSetpoints(sampleStereoVect,sampleRate,clipFilterSetpointMx);
+    
     stereoAmpVects = stereoAmplitudeFromPercent(sampleStereoVect);
     % Input is Nx1 vect of stereo positions
     % -100 for L, 0 for M, +100 for R
     % Output is Nx2 matrix of amplitudes in L, R channels
-
+        
     waveOutputVectL = [padZerosBefore;(stereoAmpVects(:,1).*sampleAmpVect).*waveOutputVect;padZerosAfter];
-    waveOutputVectL = filterFromSetpoints(waveOutputVectL,sampleRate,filterSetpointMx);
+    waveOutputVectL = filterFromSetpoints(waveOutputVectL,sampleRate,freqFilterSetpointMx);
     waveOutputVectL = fadeStartAndEnd(waveOutputVectL,sampleZerosBefore,sampleZerosAfter,-80);
 
     waveOutputVectR = [padZerosBefore;(stereoAmpVects(:,2).*sampleAmpVect).*waveOutputVect;padZerosAfter];
-    waveOutputVectR = filterFromSetpoints(waveOutputVectR,sampleRate,filterSetpointMx);
+    waveOutputVectR = filterFromSetpoints(waveOutputVectR,sampleRate,freqFilterSetpointMx);
     waveOutputVectR = fadeStartAndEnd(waveOutputVectR,sampleZerosBefore,sampleZerosAfter,-80);
 
     waveOutputVect = [waveOutputVectL waveOutputVectR];
@@ -690,7 +702,11 @@ for chan1=1:channels
   if chan1<10
     chanText = ['0' chanText];
   endif
-  outputPathAndFileWAV = [outputDir '/' outputFilenameStub '-C' chanText '.wav'];
+  freqMultText = '';
+  if abs(freqMult-1) > 0.00001
+    freqMultText = ['-FM' num2str(round(freqMult*1000))];
+  endif
+  outputPathAndFileWAV = [outputDir '/' outputFilenameStub freqMultText '-V' chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
 
