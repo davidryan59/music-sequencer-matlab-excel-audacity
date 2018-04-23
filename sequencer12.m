@@ -544,7 +544,8 @@ for chan1=1:channels
       % Set the comma vector here.
       % Sometimes the last entry is a zero. Ones should be the default value
       % Shorten it slightly to get rid of this error
-      commaFreqVect = sampleFreqVect(1:max(ceil(0.99*length(sampleFreqVect)),end-5));
+      commaMult = 1/sampleFreqVect(1);     % Divide out by first value (which may be freqMult) - relevant for graph
+      commaFreqVect = commaMult * sampleFreqVect(1:max(ceil(0.99*length(sampleFreqVect)),end-5));
       if commaChan1Status > 0
         smoothTime = commaChan1Status;                    % Reuse the (decimal) variable as a timescale
         smoothSamples = floor(smoothTime*sampleRate);                    % Number of samples to smooth over
