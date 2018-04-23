@@ -711,7 +711,11 @@ for chan1=1:channels
   if abs(freqMult-1) > 0.00001
     freqMultText = ['-FM' num2str(round(freqMult*1000))];
   endif
-  outputPathAndFileWAV = [outputDir '/' outputFilenameStub freqMultText '-V' chanText '.wav'];
+  bpmText = '';
+  if beatsPerMinute > 10
+    bpmText = ['-BPM' num2str(round(beatsPerMinute))];
+  endif
+  outputPathAndFileWAV = [outputDir '/' outputFilenameStub freqMultText bpmText '-V' chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
 
