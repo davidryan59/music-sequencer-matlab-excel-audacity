@@ -319,24 +319,34 @@ for chan1=1:channels
     % Timing and Sample Length variables
     tempBeatStart = vectBeatStart(row1);
     
+    % Amplitude interpolation and control variables
+    tempInterpTypeAmp = vectAmpInterpTypeChan(row1);
+    tiedNote = (abs(vectAmpTiedToPrevBoolChan(row1))>0.5);       % 0 = untied, 1 = tied
+    tiedNoteNext = (abs(vectAmpTiedToPrevBoolChan(row2))>0.5);   % 0 = untied, 1 = tied
+    decayingNote = (abs(vectAmpEndAtNextBoolChan(row1))<0.5);    % 0 = interp to next amp, 1 = interp to decayed amp
     
-    %% OLD (Pre-Feb 2018)
-    %tempBeatEnd = vectBeatEnd(row1);
-    
-    %% NEW (2018_02_19)
-    tempBeatsLength = vectLengthBeatsChan(row1);
-    if tempNoteLengthMS > 0
-      % Positive ms. Note is that amount of ms.
-      tempBeatsLength = beatsPerSecondDecimal * (tempNoteLengthMS/1000);
-    elseif tempNoteLengthMS < 0
-      % Negative ms. Deduct that number of ms from the note.
-      tempBeatsLength = max(0, tempBeatsLength - beatsPerSecondDecimal * (-tempNoteLengthMS/1000));
-    elseif tempNoteLengthPercentMult > 0
-      % Positive percent mult. Multiply by 0% to 100%. (If there is no next note, 110% has an effect)
-      tempBeatsLength = tempBeatsLength * (tempNoteLengthPercentMult/100);
-    end
-    tempBeatEnd = vectBeatStart(row1) + tempBeatsLength;
-    
+    % Deal with whether there should be an amplitude gap at the end of this note or not
+    if or(tiedNoteNext, !decayingNote)
+      % Use original note length when the next note is tied to this one,
+      % or when this note doesn't decay in amplitude.
+      tempBeatEnd = vectBeatEnd(row1);    
+    else
+      % If this note doesn't tie to or depend on next note,
+      % insert a small amplitude gap at end of the note, depending on
+      % a couple of factors
+      tempBeatsLength = vectLengthBeatsChan(row1);
+      if tempNoteLengthMS > 0
+        % Positive ms. Note is that amount of ms.
+        tempBeatsLength = beatsPerSecondDecimal * (tempNoteLengthMS/1000);
+      elseif tempNoteLengthMS < 0
+        % Negative ms. Deduct that number of ms from the note.
+        tempBeatsLength = max(0, tempBeatsLength - beatsPerSecondDecimal * (-tempNoteLengthMS/1000));
+      elseif tempNoteLengthPercentMult > 0
+        % Positive percent mult. Multiply by 0% to 100%. (If there is no next note, 110% has an effect)
+        tempBeatsLength = tempBeatsLength * (tempNoteLengthPercentMult/100);
+      end
+      tempBeatEnd = vectBeatStart(row1) + tempBeatsLength;
+    endif
     
     sampleStart = 1 + round(tempBeatStart*samplesPerBeatDecimal);
     sampleEnd = 1 + round(tempBeatEnd*samplesPerBeatDecimal);
@@ -368,11 +378,6 @@ for chan1=1:channels
     else
       modifiedDecayRate = dBdecayRate.*((0.01+tempFreq)/dBdecayRefFreq).^dBdecayRefIndex;
     endif
-
-    % Amplitude interpolation and control variables
-    tempInterpTypeAmp = vectAmpInterpTypeChan(row1);
-    tiedNote = (abs(vectAmpTiedToPrevBoolChan(row1))>0.5);       % 0 = untied, 1 = tied
-    decayingNote = (abs(vectAmpEndAtNextBoolChan(row1))<0.5);    % 0 = interp to next amp, 1 = interp to decayed amp
 
     % Amplitude - deal with variables related to tied notes
     if tiedNote
