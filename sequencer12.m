@@ -45,7 +45,8 @@ maxChannels = 12;    % Current Excel spreadsheet deals with up to 12 channels
 if length(fileTag)
   fileTag = ['-' fileTag];
 endif
-outputFilenameStub = [inputFilenameStub '-T' num2str(round(100000*now)) fileTag];
+uniqueTimingText = ['-T' num2str(round(86400*now))];     % Increments every second. Gives unique filenames.
+outputFilenameStub = [inputFilenameStub fileTag uniqueTimingText];
 inputPathAndFileCSV = [inputDir '/' inputFilenameStub '.csv'];
 outputPathAndFileCSV = [outputDir '/' outputFilenameStub '.csv'];
 display(['Input file: ' inputPathAndFileCSV]);
@@ -708,6 +709,7 @@ for chan1=1:channels
   if chan1<10
     chanText = ['0' chanText];
   endif
+  chanText = ['-V' chanText];
   freqMultText = '';
   if abs(freqMult-1) > 0.00001
     freqMultText = ['-FM' num2str(round(freqMult*1000))];
@@ -716,7 +718,15 @@ for chan1=1:channels
   if beatsPerMinute > 10
     bpmText = ['-BPM' num2str(round(beatsPerMinute))];
   endif
-  outputPathAndFileWAV = [outputDir '/' outputFilenameStub freqMultText bpmText '-V' chanText '.wav'];
+  srText = '';
+  if sampleRate > 10
+    srText = ['-SR' num2str(round(sampleRate))];
+  endif
+  bitText = '';
+  if bitRate > 7
+    bitText = ['-BIT' num2str(round(bitRate))];
+  endif
+  outputPathAndFileWAV = [outputDir '/' outputFilenameStub freqMultText bpmText srText bitText chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
 
