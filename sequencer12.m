@@ -46,11 +46,9 @@ if length(fileTag)
   fileTag = ['-' fileTag];
 endif
 uniqueTimingText = ['-T' num2str(round(86400*now))];     % Increments every second. Gives unique filenames.
-outputFilenameStub = [inputFilenameStub fileTag uniqueTimingText];
+outputFilenameStub = [inputFilenameStub uniqueTimingText];
 inputPathAndFileCSV = [inputDir '/' inputFilenameStub '.csv'];
-outputPathAndFileCSV = [outputDir '/' outputFilenameStub '.csv'];
 display(['Input file: ' inputPathAndFileCSV]);
-display(['Output file: ' outputPathAndFileCSV]);
 
 % Do the import here with error checking
 try
@@ -726,7 +724,8 @@ for chan1=1:channels
   if bitRate > 7
     bitText = ['-BIT' num2str(round(bitRate))];
   endif
-  outputPathAndFileWAV = [outputDir '/' outputFilenameStub freqMultText bpmText srText bitText chanText '.wav'];
+  allTags = [freqMultText bpmText srText bitText fileTag];
+  outputPathAndFileWAV = [outputDir '/' outputFilenameStub allTags chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
 
@@ -742,6 +741,8 @@ retval = 'sequencer12 succeeded';
 
 if channelsWritten>0
   % Make a copy of the CSV input file alongside output WAVs
+  outputPathAndFileCSV = [outputDir '/' outputFilenameStub allTags '.csv'];
+  display(['Output file: ' outputPathAndFileCSV]);
   copyfile(inputPathAndFileCSV,outputPathAndFileCSV);
 endif
 
