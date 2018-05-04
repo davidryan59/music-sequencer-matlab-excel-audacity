@@ -710,19 +710,19 @@ for chan1=1:channels
   chanText = ['-V' chanText];
   freqMultText = '';
   if abs(freqMult-1) > 0.00001
-    freqMultText = ['-FM' num2str(round(freqMult*1000))];
+    freqMultText = ['-' num2str(round(freqMult*1000)) 'relfreq'];
   endif
   bpmText = '';
   if beatsPerMinute > 10
-    bpmText = ['-BPM' num2str(round(beatsPerMinute))];
+    bpmText = ['-' num2str(round(beatsPerMinute)) 'bpm'];
   endif
   srText = '';
   if sampleRate > 10
-    srText = ['-SR' num2str(round(sampleRate))];
+    srText = ['-' num2str(round(sampleRate)) 'Hz'];
   endif
   bitText = '';
   if bitRate > 7
-    bitText = ['-BIT' num2str(round(bitRate))];
+    bitText = ['-' num2str(round(bitRate)) 'bit'];
   endif
   allTags = [freqMultText bpmText srText bitText fileTag];
   outputPathAndFileWAV = [outputDir '/' outputFilenameStub allTags chanText '.wav'];
