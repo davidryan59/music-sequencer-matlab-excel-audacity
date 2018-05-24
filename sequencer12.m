@@ -121,7 +121,7 @@ endfor
 % Setup default values for main parameters over all channels
 sampleRate = 44100;
 bitRate = 16;
-playAtFullVolume = 0;
+parameterSet = 0;
 alwaysDecay = 0;
 padSecondsBefore = 0.05;
 padSecondsAfter = 0.2;
@@ -178,6 +178,10 @@ endfor
 % Each max(...) finds the LAST place that control = <specified value>
 % so assign each variable only once per sequence file.
 % -----
+% Parameter Set (only used for filename)
+index0 = max(vectUnit.*(vectControl==111));
+if index0>0; parameterSet = vectFreqOrParam(index0); endif
+% -----
 % Sample Rate (only certain values will output correctly, including 8000, 22050, 44100)
 index0 = max(vectUnit.*(vectControl==100));
 if index0>0; sampleRate = vectFreqOrParam(index0); endif
@@ -185,10 +189,6 @@ if index0>0; sampleRate = vectFreqOrParam(index0); endif
 % Bit Rate (8, 16, 24, 32 only please)
 index0 = max(vectUnit.*(vectControl==110));
 if index0>0; bitRate = vectFreqOrParam(index0); endif
-% -----
-% Play channel at full volume? 1 for full volume, blank for (1/channels) volume normalisation
-index0 = max(vectUnit.*(vectControl==111));
-if index0>0; playAtFullVolume = vectFreqOrParam(index0); endif
 % -----
 % Notes must decay? 0 for no, 1 for yes.
 index0 = max(vectUnit.*(vectControl==112));
@@ -234,11 +234,6 @@ samplesPerBeatDecimal = sampleRate/beatsPerSecondDecimal;
 % First channel MAY be for commas
 vectChannel = min(maxChannels,max(0,floor(vectChannel)));
 channels = max(vectChannel);
-if playAtFullVolume > 0
-  volumeConst = 1;
-else
-  volumeConst = 1./channels;
-endif
 
 % Loop over the channels
 channelsWritten = 0;
@@ -291,6 +286,8 @@ for chan1=1:channels
   dBdecayRate = 20;                             % dB/s - amplitude decay rate at ref. freq. - can set to 0 for no decay
   dBdecayRefFreq = 256;                         % Hz - reference frequency (256Hz recommended)
   dBdecayRefIndex = 0.5;                        % Specifies how much quicker freqs higher than ref freq can decay
+  % Parameters affecting volume
+  dBmax = 6;                                    % Most notes 0dB. Setting max as 6dB means most notes become -6dB.
   % Parameters affecting tremolo
   tremoloPeriodBeats = 3;                       % Default of peak-trough-peak taking 3 beats
   tremoloDepthDB = 1.5;                         % 0 is off. Positive value is max reduction in amplitude DBs
@@ -443,6 +440,8 @@ for chan1=1:channels
     if tempControl==-101; dBdecayRate=tempParam; endif;        % Allow < 0
     if tempControl==-102; dBdecayRefFreq=tempAbsParam; endif;
     if tempControl==-103; dBdecayRefIndex=tempParam; endif;    % Allow < 0
+    % Amplitude control
+    if tempControl==-110; dBmax=max(0, tempParam); endif;    % Most notes will be 0dB. If this max is 20dB, notes are effectively -20dB.
     % Amplitude tremolo
     if tempControl==-150; tremoloPeriodBeats=tempAbsParam; endif;
     if tempControl==-151; tremoloDepthDB=tempAbsParam; endif;
@@ -603,10 +602,17 @@ for chan1=1:channels
   % Frequencies now set up
   %plot(sampleFreqVect);
 
-  % sampleAmpVect in relative dB - change to be negative only (0dB = amplitude 1)
-  maxAmpDB = max(sampleAmpVect);
-  sampleAmpVect = sampleAmpVect - maxAmpDB;  % -infinity to 0 dB now
-  sampleAmpVect = 10.^(sampleAmpVect/20);    % pure amplitude now
+  %% REMOVED - 24th May 2018 - give user control of what's subtracted!
+  %% sampleAmpVect in relative dB - change to be negative only (0dB = amplitude 1)
+  %maxAmpDB = max(sampleAmpVect);
+  %sampleAmpVect = sampleAmpVect - maxAmpDB;  % -infinity to 0 dB now
+  
+  % Subtract the maximum dB value specified by the user
+  % Make sure the dB is negative or zero (final amplitude <= 1)
+  sampleAmpVect = min(0, sampleAmpVect - dBmax);  
+
+  % IMPROVE: dB and amp should be separate variables... Done this way for speed...  
+  sampleAmpVect = 10.^(sampleAmpVect/20);          % [0, 1] pure amplitude now
   %plot(sampleAmpVect);
 
   % Anywhere frequency is zero, overwrite amplitude with zero
@@ -713,8 +719,11 @@ for chan1=1:channels
 
   endif
 
-  % Normalise amplitude to either 1 or 1/channels (from volumeConst earlier)
-  waveOutputVect = volumeConst.*waveformNormalise(waveOutputVect);
+  % Normalise amplitude to 1
+  %% OLD VERSION - Amplitude changes...
+  %waveOutputVect = waveformNormalise(waveOutputVect);
+  % NEW VERSION - Hard Clip at 1 (24 May 2018)
+  waveOutputVect = max(-1, min(1, waveOutputVect));
 
   % Export it to file
   chanText = num2str(chan1);
@@ -738,7 +747,11 @@ for chan1=1:channels
   if bitRate > 7
     bitText = ['-' num2str(round(bitRate)) 'bit'];
   endif
-  allTags = [freqMultText bpmText srText bitText fileTag];
+  paramSetText = '';
+  if parameterSet > 0.5
+    paramSetText = ['-SET' num2str(round(parameterSet))];
+  endif
+  allTags = [freqMultText bpmText srText bitText fileTag paramSetText];
   outputPathAndFileWAV = [outputDir '/' outputFilenameStub allTags chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
