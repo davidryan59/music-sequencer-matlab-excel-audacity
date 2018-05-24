@@ -122,10 +122,12 @@ endfor
 sampleRate = 44100;
 bitRate = 16;
 playAtFullVolume = 0;
+alwaysDecay = 0;
 padSecondsBefore = 0.05;
 padSecondsAfter = 0.2;
 beatsPerMinute = 120;
 freqMult = 1;
+stereoPosMult = 1;
 commaChan1Status = 0;
 randSample = rand(20000,1);    % Used for waveformRandom sampling
 
@@ -188,6 +190,10 @@ if index0>0; bitRate = vectFreqOrParam(index0); endif
 index0 = max(vectUnit.*(vectControl==111));
 if index0>0; playAtFullVolume = vectFreqOrParam(index0); endif
 % -----
+% Notes must decay? 0 for no, 1 for yes.
+index0 = max(vectUnit.*(vectControl==112));
+if index0>0; alwaysDecay = vectFreqOrParam(index0); endif
+% -----
 % Seconds of padding (silence) at start of final tracks
 index0 = max(vectUnit.*(vectControl==120));
 if index0>0; padSecondsBefore = vectFreqOrParam(index0); endif
@@ -203,6 +209,10 @@ if index0>0; beatsPerMinute = vectFreqOrParam(index0); endif
 % Frequency Multiplier (retunes all tracks)
 index0 = max(vectUnit.*(vectControl==180));
 if index0>0; freqMult = vectFreqOrParam(index0); endif
+% -----
+% Stereo Position Multiplier (moves all tracks out or in from stereo centre)
+index0 = max(vectUnit.*(vectControl==181));
+if index0>0; stereoPosMult = vectFreqOrParam(index0); endif
 % -----
 % Channel 1 Comma Status
 % 0 to play channel 1 like a standard channel. Other options do not play channel 1.
@@ -322,7 +332,11 @@ for chan1=1:channels
     tempInterpTypeAmp = vectAmpInterpTypeChan(row1);
     tiedNote = (abs(vectAmpTiedToPrevBoolChan(row1))>0.5);       % 0 = untied, 1 = tied
     tiedNoteNext = (abs(vectAmpTiedToPrevBoolChan(row2))>0.5);   % 0 = untied, 1 = tied
-    decayingNote = (abs(vectAmpEndAtNextBoolChan(row1))<0.5);    % 0 = interp to next amp, 1 = interp to decayed amp
+    if abs(alwaysDecay) > 0.5
+      decayingNote = 1;
+    else
+      decayingNote = (abs(vectAmpEndAtNextBoolChan(row1))<0.5);    % 0 = interp to next amp, 1 = interp to decayed amp
+    endif    
     
     % Deal with whether there should be an amplitude gap at the end of this note or not
     if or(tiedNoteNext, !decayingNote)
@@ -458,7 +472,7 @@ for chan1=1:channels
 
       % Write stereo vector
       if stereoChannel
-        sampleStereoVect(sampleRangeVect) = interpMethods(sampleLength,tempStereoPos,tempNextStereoPos,tempInterpTypeStereo);
+        sampleStereoVect(sampleRangeVect) = stereoPosMult.*interpMethods(sampleLength,tempStereoPos,tempNextStereoPos,tempInterpTypeStereo);
       endif
 
       % Write frequency vector
@@ -677,7 +691,7 @@ for chan1=1:channels
     % STEREO CASE
     stereoText = 'in stereo';
 
-    % Remove high frequency info from amplitude vector
+    % Remove high frequency info from stereo vector
     % to prevent clipping at start and end of notes
     %sampleStereoVect = averageSmooth7point(sampleStereoVect);    % Doesn't remove enough!
     sampleStereoVect = filterFromSetpoints(sampleStereoVect,sampleRate,clipFilterSetpointMx);
