@@ -126,9 +126,13 @@ alwaysDecay = 0;
 padSecondsBefore = 0.05;
 padSecondsAfter = 0.2;
 beatsPerMinute = 120;
+beatsInBar = 8;
+startBar = 0;
+endBar = 0;
 freqMult = 1;
 stereoPosMult = 1;
 commaChan1Status = 0;
+channel1IsCommas = 1;          % Default is that channel 1 is commas. Change this if specified below.
 randSample = rand(20000,1);    % Used for waveformRandom sampling
 
 % Custom Filter Table, rows have control=-80
@@ -206,6 +210,18 @@ if index0>0; padSecondsAfter = vectFreqOrParam(index0); endif
 index0 = max(vectUnit.*(vectControl==130));
 if index0>0; beatsPerMinute = vectFreqOrParam(index0); endif
 % -----
+% Beats in bar
+index0 = max(vectUnit.*(vectControl==140));
+if index0>0; beatsInBar = vectFreqOrParam(index0); endif
+% -----
+% Start bar (0 for 'from beginning')
+index0 = max(vectUnit.*(vectControl==150));
+if index0>0; startBar = vectFreqOrParam(index0); endif
+% -----
+% End bar (0 for 'to end')
+index0 = max(vectUnit.*(vectControl==151));
+if index0>0; endBar = vectFreqOrParam(index0); endif
+% -----
 % Frequency Multiplier (retunes all tracks)
 index0 = max(vectUnit.*(vectControl==180));
 if index0>0; freqMult = vectFreqOrParam(index0); endif
@@ -216,12 +232,25 @@ if index0>0; stereoPosMult = vectFreqOrParam(index0); endif
 % -----
 % Channel 1 Comma Status
 % 0 to play channel 1 like a standard channel. Other options do not play channel 1.
-% -2 to play higher channels with unnormalised commas based on channel 1 values (which should be near to 1)
 % -1 to not play channel 1
-% >0 to play higher channels with normalised commas, depending on the (decimal) value given here.
+% Any other negative value to play higher channels with unnormalised commas based on channel 1 values (which should be near to 1)
+% Any positive value to play higher channels with normalised commas, depending on the (decimal) value given here.
 index0 = max(vectUnit.*(vectControl==190));
 if index0>0; commaChan1Status = vectFreqOrParam(index0); endif
 commaFreqVect = 1;     % This will be extended to a long vector later on!
+if or(commaChan1Status==-1, commaChan1Status==0); channel1IsCommas = 0; endif
+
+% Start and end beat. Start beat must be at least 0, and comes from min of start/end bars
+startBeat = max(0, beatsInBar * (min(startBar,endBar) - 1));
+% End beat coms from max of start/end bars
+theEndBar = max(startBar,endBar);
+if theEndBar < 0.5
+  % But if the end bar is not a positive integer, give a high value (to include all notes)
+  endBeat = 1000000;
+else
+  % Otherwise do the calc as normal.
+  endBeat = beatsInBar * theEndBar;
+endif
 
 % Calculations based on parameters
 padZerosBefore = zeros(round(padSecondsBefore.*sampleRate),1);
@@ -237,13 +266,13 @@ channels = max(vectChannel);
 
 % Loop over the channels
 channelsWritten = 0;
-for chan1=1:channels
+for chanNum=1:channels
 
   % EACH CHANNEL IS PROCESSED ENTIRELY SEPARATELY
   % IT IS THE USER'S RESPONSIBILITY TO CHECK
   % THEY ARE SYNCHRONISED!
 
-  channelIndex = (vectChannel==chan1);
+  channelIndex = (vectChannel==chanNum);
 
   vectControlChan = vectControl(channelIndex);
   %vectChannelChan = vectChannel(channelIndex);
@@ -358,6 +387,16 @@ for chan1=1:channels
       tempBeatEnd = vectBeatStart(row1) + tempBeatsLength;
     endif
     
+    % If start or end of this note is not in right range, don't write the note (for non-comma channels)
+    if and(chanNum==1, channel1IsCommas==1)
+      % If channel 1 is commas, always write note
+    else
+      if or(tempBeatEnd < startBeat, endBeat < tempBeatStart)
+        % Don't write note if its out of specified range
+        tempWriteNote=0;
+      endif
+    endif
+    
     sampleStart = 1 + round(tempBeatStart*samplesPerBeatDecimal);
     sampleEnd = 1 + round(tempBeatEnd*samplesPerBeatDecimal);
     sampleRangeVect = (sampleStart:sampleEnd)';
@@ -434,32 +473,35 @@ for chan1=1:channels
 
     % Handle transient channel control parameters - use either Param or AbsParam
     % Is it a rest?
-    if tempControl<0; tempWriteNote=0; endif;   % Any negative control number means note doesn't play
-    % Amplitude decay
-    if tempControl==-100; dBpeakSeconds=tempAbsParam; endif;
-    if tempControl==-101; dBdecayRate=tempParam; endif;        % Allow < 0
-    if tempControl==-102; dBdecayRefFreq=tempAbsParam; endif;
-    if tempControl==-103; dBdecayRefIndex=tempParam; endif;    % Allow < 0
-    % Amplitude control
-    if tempControl==-110; dBmax=max(0, tempParam); endif;    % Most notes will be 0dB. If this max is 20dB, notes are effectively -20dB.
-    % Amplitude tremolo
-    if tempControl==-150; tremoloPeriodBeats=tempAbsParam; endif;
-    if tempControl==-151; tremoloDepthDB=tempAbsParam; endif;
-    % Frequency noise
-    if tempControl==-200; noiseSamples=tempAbsParam; endif;
-
-    % Filter selection
-    if tempControl==-350; filterType=round(tempAbsParam); endif;
-    % Waveform selection
-    if tempControl==-450; voiceType=round(tempAbsParam); endif;
-    if tempControl==-400; waveType=round(tempAbsParam); endif;
-    % Mute Channel (positive value) or play channel (blank or 0)
-    if tempControl==-500; muteChannel=tempAbsParam; endif;
-    if tempControl==-999; break; endif;                 % Ignore all remaining notes on channel
+    if tempControl<0;
+       % Any negative control number means note doesn't play
+      tempWriteNote=0;
+      % Amplitude decay
+      if tempControl==-100; dBpeakSeconds=tempAbsParam; endif;
+      if tempControl==-101; dBdecayRate=tempParam; endif;        % Allow < 0
+      if tempControl==-102; dBdecayRefFreq=tempAbsParam; endif;
+      if tempControl==-103; dBdecayRefIndex=tempParam; endif;    % Allow < 0
+      % Amplitude control
+      if tempControl==-110; dBmax=max(0, tempParam); endif;    % Most notes will be 0dB. If this max is 20dB, notes are effectively -20dB.
+      % Amplitude tremolo
+      if tempControl==-150; tremoloPeriodBeats=tempAbsParam; endif;
+      if tempControl==-151; tremoloDepthDB=tempAbsParam; endif;
+      % Frequency noise
+      if tempControl==-200; noiseSamples=tempAbsParam; endif;
+  
+      % Filter selection
+      if tempControl==-350; filterType=round(tempAbsParam); endif;
+      % Waveform selection
+      if tempControl==-450; voiceType=round(tempAbsParam); endif;
+      if tempControl==-400; waveType=round(tempAbsParam); endif;
+      % Mute Channel (positive value) or play channel (blank or 0)
+      if tempControl==-500; muteChannel=tempAbsParam; endif;
+      if tempControl==-999; break; endif;                 % Ignore all remaining notes on channel
+    endif;
 
     if muteChannel > 0
       % Stop writing notes to this channel if a mute instruction received
-      % (Go to next channel using 'break')
+      % (Go to next channel using 'break'. This instruction should be at the top.)
       break
     endif
 
@@ -531,19 +573,19 @@ for chan1=1:channels
   % Ignore channel if it has no notes
   if notesWritten<1
     % No notes written on this channel - iterate to next channel
-    %display(['Channel ' num2str(chan1) ' empty']);
+    %display(['Channel ' num2str(chanNum) ' empty']);
     continue
   endif
 
   % Ignore channel if a mute instruction received
-  %display([chan1 muteChannel]);
+  %display([chanNum muteChannel]);
   if muteChannel > 0
     continue
   endif
 
   % Deal with case where channel 1 is comma shift information
   % This causes microtonal retuning in sections
-  if chan1==1
+  if chanNum==1
     if commaChan1Status==-1
       % Ignore channel 1 if status is -1, continue to next channel
       display('Comma Channel 1 ignored');
@@ -556,7 +598,12 @@ for chan1=1:channels
       % Set the comma vector here.
       % Sometimes the last entry is a zero. Ones should be the default value
       % Shorten it slightly to get rid of this error
+      
+      % OLD - doesn't work when not writing first bar... unless... (stick with this...)
       commaMult = 1/sampleFreqVect(1);     % Divide out by first value (which may be freqMult) - relevant for graph
+      % NEW (May 2018)
+      %commaMult = 1/freqMult;
+      
       commaFreqVect = commaMult * sampleFreqVect(1:max(ceil(0.99*length(sampleFreqVect)),end-5));
       if commaChan1Status > 0
         smoothTime = commaChan1Status;                    % Reuse the (decimal) variable as a timescale
@@ -581,6 +628,7 @@ for chan1=1:channels
         commaTag = ['NC' num2str(round(1000*commaChan1Status)) 'ms'];
         display(['Comma Channel 1 processed as commas normalised over ' num2str(round(10*commaChan1Status)/10) 's']);
       else
+        % commaChan1Status is any negative value (e.g. -2), other than -1
         commaTag = ['UNC'];
         display('Comma Channel 1 processed as un-normalised commas');
       endif
@@ -726,8 +774,8 @@ for chan1=1:channels
   waveOutputVect = max(-1, min(1, waveOutputVect));
 
   % Export it to file
-  chanText = num2str(chan1);
-  if chan1<10
+  chanText = num2str(chanNum);
+  if chanNum<10
     chanText = ['0' chanText];
   endif
   chanText = ['-V' chanText];
