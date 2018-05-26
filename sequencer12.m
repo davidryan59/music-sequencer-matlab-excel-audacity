@@ -26,7 +26,7 @@
 function [retval] = sequencer12(options)
 
 tic;
-retval = 'sequencer12 failed';
+retval = 'Sequencer12 failed';
 
 % Extract input parameters from options struct
 inputFilenameStub = getParam(options, 'inputFilenameStub', 'sequencer12_output');
@@ -56,10 +56,10 @@ try
 catch
   % If previous step throws error (e.g. file not available)
   % then exit with error (return 0)
-  importResult = 'import failed';
+  importResult = 'Import failed';
   return
 end_try_catch
-importResult = ['import succeeded with size ' num2str(size(dataImport))];
+importResult = ['Import succeeded with size ' num2str(size(dataImport))];
 display(importResult);
 
 % Some important variables
