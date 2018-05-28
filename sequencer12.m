@@ -320,6 +320,8 @@ for chanNum=1:channels
   dBdecayRefIndex = 0.5;                        % Specifies how much quicker freqs higher than ref freq can decay
   % Parameters affecting volume
   dBmax = 6;                                    % Most notes 0dB. Setting max as 6dB means most notes become -6dB.
+  % Parameters affecting stereo panning
+  defaultStereoPos = 0;
   % Parameters affecting tremolo
   tremoloPeriodBeats = 3;                       % Default of peak-trough-peak taking 3 beats
   tremoloDepthDB = 1.5;                         % 0 is off. Positive value is max reduction in amplitude DBs
@@ -342,7 +344,7 @@ for chanNum=1:channels
   prevTremoloPhase = 0;
   for row1=1:lenChannel                % This Row
     row2 = min(lenChannel,row1+1);     % Next Row
-    tempWriteNote = 1;                    % Only write a note if this variable stays 1
+    tempWriteNote = 1;                 % Only write a note if this variable stays 1
 
     % EACH ROW REPRESENTS:
     % 1) A control message (Control<0)
@@ -486,6 +488,15 @@ for chanNum=1:channels
       if tempControl==-103; dBdecayRefIndex=tempParam; endif;    % Allow < 0
       % Amplitude control
       if tempControl==-110; dBmax=max(0, tempParam); endif;    % Most notes will be 0dB. If this max is 20dB, notes are effectively -20dB.
+      % Stereo control
+      if tempControl==-120
+        defaultStereoPos=max(-100,min(100,tempParam));
+        if notesWritten==0
+          % Reset stereo vect to default
+          % (Need to have default at top of file!)
+          sampleStereoVect = defaultStereoPos + zeros(totalSamples,1);          
+        endif
+      endif
       % Amplitude tremolo
       if tempControl==-150; tremoloPeriodBeats=tempAbsParam; endif;
       if tempControl==-151; tremoloDepthDB=tempAbsParam; endif;
@@ -786,7 +797,7 @@ for chanNum=1:channels
 endfor
 
 % DEBUG - Plot
-%plot(plotVect);
+plot(plotVect);
 
 % Provide suitable output
 display(['Time taken: ' num2str(toc) 's']);
