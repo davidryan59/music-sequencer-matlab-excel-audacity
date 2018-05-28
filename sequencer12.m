@@ -609,16 +609,12 @@ for chanNum=1:channels
       
       commaFreqVect = commaMult * sampleFreqVect(1:max(ceil(0.99*length(sampleFreqVect)),end-5));
       if commaChan1Status > 0
-        smoothTime = commaChan1Status;                    % Reuse the (decimal) variable as a timescale
+        smoothTime = commaChan1Status;                                   % Reuse the (decimal) variable as a timescale
         smoothSamples = floor(smoothTime*sampleRate);                    % Number of samples to smooth over
-        smoothCommaVect = averageMoving(commaFreqVect,smoothSamples);    % Once - linear smoothing
-        smoothCommaVect = averageMoving(smoothCommaVect,smoothSamples);  % Twice - quadratic smoothing
-        smoothCommaVect = averageMoving(smoothCommaVect,smoothSamples);  % Thrice - cubic smoothing
-        smoothCommaVect = averageMoving(smoothCommaVect,smoothSamples);  % Four
-        smoothCommaVect = averageMoving(smoothCommaVect,smoothSamples);  % Five (multiple times improves phasing!)
+        smoothCommaVect = averageIterateMoving(commaFreqVect, smoothSamples, 5);   % Smooth five times. Multiple times improves phasing!
         % (Its OK to run this lots of times since it only happens once per sequencing run)
         commaFreqVect0 = commaFreqVect;                                  % Unnormalised version for graphing
-        commaFreqVect = commaFreqVect./smoothCommaVect;   % Remove the smoothed version for normalised version
+        commaFreqVect = commaFreqVect./smoothCommaVect;                  % Remove the smoothed version for normalised version
         % ------
         % Plot graph of comma data
         timeVect = 1:length(commaFreqVect);
@@ -782,17 +778,15 @@ for chanNum=1:channels
   
   %% DEBUG - Store Data
   if chanNum==2
+    %plotVect = sampleAmpVect;
     plotVect = sampleStereoVect;
+    %plotVect = waveOutputVect;
   endif
 
 endfor
 
 % DEBUG - Plot
-plot(plotVect);
-
-% Plot waveform (on last channel)
-% (Suppressed to be able to plot channel 1, the commas, earlier.)
-%plot(waveOutputVect);
+%plot(plotVect);
 
 % Provide suitable output
 display(['Time taken: ' num2str(toc) 's']);
