@@ -132,8 +132,13 @@ endBar = 0;
 freqMult = 1;
 stereoPosMult = 1;
 commaChan1Status = 0;
-channel1IsCommas = 1;          % Default is that channel 1 is commas. Change this if specified below.
-randSample = rand(20000,1);    % Used for waveformRandom sampling
+channel1IsCommas = 1;            % Default is that channel 1 is commas. Change this if specified below.
+randSample = rand(20000,1);      % Used for waveformRandom sampling
+
+% Low Frequency Smoothing - used on amplitude and stereo vectors to prevent clipping
+smoothLowFreqTime = 0.002;       % seconds
+smoothLowFreqIterations = 2;     % quadratic
+smoothLowFreqSamples = ceil(smoothLowFreqTime*sampleRate);
 
 % Custom Filter Table, rows have control=-80
 filterIndex = (vectControl==-80);
@@ -716,12 +721,8 @@ for chanNum=1:channels
     freqFilterSetpointMx = [1 -120; 15 0; sampleRate 0];     % Filter out inaudibly low noise
   endif
   
-  clipFilterSetpointMx = [1 0; 100 0; 1000 -10; 2000 -120];  % Prevent amp or stereoamp from clipping
-  % Remove high frequency info from amplitude vector
-  % to prevent clipping at start and end of notes
-  %sampleAmpVect = averageSmooth7point(sampleAmpVect);    % Doesn't remove enough!
-  sampleAmpVect = max(0, filterFromSetpoints(sampleAmpVect,sampleRate,clipFilterSetpointMx));
-  
+  % Amplitude vector: remove high frequency info to prevent clipping at start and end of notes
+  sampleAmpVect = averageIterateMoving(sampleAmpVect, smoothLowFreqSamples, smoothLowFreqIterations);
   
   if !stereoChannel
     
@@ -734,15 +735,13 @@ for chanNum=1:channels
     % STEREO CASE
     stereoText = 'in stereo';
 
-    % Remove high frequency info from stereo vector
-    % to prevent clipping at start and end of notes
-    %sampleStereoVect = averageSmooth7point(sampleStereoVect);    % Doesn't remove enough!
-    sampleStereoVect = filterFromSetpoints(sampleStereoVect,sampleRate,clipFilterSetpointMx);
+    % Stereo vector: remove high frequency info to prevent clipping at start and end of notes
+    sampleStereoVect = averageIterateMoving(sampleStereoVect, smoothLowFreqSamples, smoothLowFreqIterations);
     
-    stereoAmpVects = stereoAmplitudeFromPercent(sampleStereoVect);
-    % Input is Nx1 vect of stereo positions
+    % In next statement, input is Nx1 vect of stereo positions
     % -100 for L, 0 for M, +100 for R
     % Output is Nx2 matrix of amplitudes in L, R channels    
+    stereoAmpVects = stereoAmplitudeFromPercent(sampleStereoVect);
     
     % For stereo, waveOutputVect Nx1 -> Nx2
     waveOutputVect = [
@@ -780,8 +779,16 @@ for chanNum=1:channels
   outputPathAndFileWAV = [outputDir '/' outputFilenameStub allTags chanText '.wav'];
   display([outputPathAndFileWAV " " stereoText]);
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
+  
+  %% DEBUG - Store Data
+  if chanNum==2
+    plotVect = sampleStereoVect;
+  endif
 
 endfor
+
+% DEBUG - Plot
+plot(plotVect);
 
 % Plot waveform (on last channel)
 % (Suppressed to be able to plot channel 1, the commas, earlier.)
