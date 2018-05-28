@@ -255,8 +255,6 @@ endif
 % Calculations based on parameters
 padZerosBefore = zeros(round(padSecondsBefore.*sampleRate),1);
 padZerosAfter = zeros(round(padSecondsAfter.*sampleRate),1);
-sampleZerosBefore = length(padZerosBefore);
-sampleZerosAfter = length(padZerosAfter);
 beatsPerSecondDecimal = beatsPerMinute/60;
 samplesPerBeatDecimal = sampleRate/beatsPerSecondDecimal;
 
@@ -728,17 +726,8 @@ for chanNum=1:channels
   if !stereoChannel
     
     % MONO CASE
-    stereoText = 'in mono';
-
-    % Apply amplitudes and padding to waveform
-    waveOutputVect = [padZerosBefore;sampleAmpVect.*waveOutputVect;padZerosAfter];
-
-    % Do the filter
-    waveOutputVect = filterFromSetpoints(waveOutputVect,sampleRate,freqFilterSetpointMx);
-
-    % Fade to zero in padding sections
-    % by -80 dB (for 16 bit audio max needed is 96dB)
-    waveOutputVect = fadeStartAndEnd(waveOutputVect,sampleZerosBefore,sampleZerosAfter,-80);
+    stereoText = 'in mono';    
+    waveOutputVect = processChannel(waveOutputVect, sampleAmpVect, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx);
 
   else
     
@@ -753,31 +742,19 @@ for chanNum=1:channels
     stereoAmpVects = stereoAmplitudeFromPercent(sampleStereoVect);
     % Input is Nx1 vect of stereo positions
     % -100 for L, 0 for M, +100 for R
-    % Output is Nx2 matrix of amplitudes in L, R channels
-        
-    waveOutputVectL = [padZerosBefore;(stereoAmpVects(:,1).*sampleAmpVect).*waveOutputVect;padZerosAfter];
-    waveOutputVectL = filterFromSetpoints(waveOutputVectL,sampleRate,freqFilterSetpointMx);
-    waveOutputVectL = fadeStartAndEnd(waveOutputVectL,sampleZerosBefore,sampleZerosAfter,-80);
-
-    waveOutputVectR = [padZerosBefore;(stereoAmpVects(:,2).*sampleAmpVect).*waveOutputVect;padZerosAfter];
-    waveOutputVectR = filterFromSetpoints(waveOutputVectR,sampleRate,freqFilterSetpointMx);
-    waveOutputVectR = fadeStartAndEnd(waveOutputVectR,sampleZerosBefore,sampleZerosAfter,-80);
-
-    waveOutputVect = [waveOutputVectL waveOutputVectR];
-
+    % Output is Nx2 matrix of amplitudes in L, R channels    
+    
+    % For stereo, waveOutputVect Nx1 -> Nx2
+    waveOutputVect = [
+      processChannel(waveOutputVect, stereoAmpVects(:,1).*sampleAmpVect, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx),...
+      processChannel(waveOutputVect, stereoAmpVects(:,2).*sampleAmpVect, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx)
+    ];
+    
   endif
-
-  % Normalise amplitude to 1
-  %% OLD VERSION - Amplitude changes...
-  %waveOutputVect = waveformNormalise(waveOutputVect);
-  % NEW VERSION - Hard Clip at 1 (24 May 2018)
-  waveOutputVect = max(-1, min(1, waveOutputVect));
 
   % Export it to file
   chanText = num2str(chanNum);
-  if chanNum<10
-    chanText = ['0' chanText];
-  endif
+  if chanNum<10; chanText = ['0' chanText]; endif
   chanText = ['-V' chanText];
   freqMultText = '';
   if abs(freqMult-1) > 0.00001
