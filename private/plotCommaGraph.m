@@ -3,7 +3,8 @@
 
 function [retval] = plotCommaGraph(commaFreqVect, smoothCommaVect, commaFreqUnNormV, sampleRate)
   
-  display ('potatoes');
+  % DEBUG
+  %display ('Plotting comma graph');
   
   lenV = length(commaFreqVect);
   sampleTime = 1/sampleRate; 
