@@ -3,7 +3,9 @@
 
 function [retval] = processChannel(waveV, ampV, padVStart, padVEnd, sampleRate, filterMx)
   
-  %
+  % DEBUG
+  %display('processChannel running');
+  
   zerosStart = length(padVStart);
   zerosEnd = length(padVEnd);
   

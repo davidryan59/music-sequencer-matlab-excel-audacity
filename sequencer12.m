@@ -728,13 +728,13 @@ for chanNum=1:channels
     freqFilterSetpointMx = [1 -120; 15 0; sampleRate 0];     % Filter out inaudibly low noise
   endif
   
-  % Amplitude vector: remove high frequency info to prevent clipping at start and end of notes
-  sampleAmpVect = averageIterateMoving(sampleAmpVect, smoothLowFreqSamples, smoothLowFreqIterations);
   
   if !stereoChannel
     
     % MONO CASE
     stereoText = 'in mono';    
+    % Amplitude vector: remove high frequency info to prevent clipping at start and end of notes
+    sampleAmpVect = averageIterateMoving(sampleAmpVect, smoothLowFreqSamples, smoothLowFreqIterations);
     waveOutputVect = processChannel(waveOutputVect, sampleAmpVect, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx);
 
   else
@@ -743,17 +743,21 @@ for chanNum=1:channels
     stereoText = 'in stereo';
 
     % Stereo vector: remove high frequency info to prevent clipping at start and end of notes
-    sampleStereoVect = averageIterateMoving(sampleStereoVect, smoothLowFreqSamples, smoothLowFreqIterations);
+    %sampleStereoVect = averageIterateMoving(sampleStereoVect, smoothLowFreqSamples, smoothLowFreqIterations);
     
     % In next statement, input is Nx1 vect of stereo positions
     % -100 for L, 0 for M, +100 for R
     % Output is Nx2 matrix of amplitudes in L, R channels    
     stereoAmpVects = stereoAmplitudeFromPercent(sampleStereoVect);
     
+    % Amplitude vector: remove high frequency info to prevent clipping at start and end of notes
+    sampleAmpVectL = averageIterateMoving(stereoAmpVects(:,1).*sampleAmpVect, smoothLowFreqSamples, smoothLowFreqIterations);
+    sampleAmpVectR = averageIterateMoving(stereoAmpVects(:,2).*sampleAmpVect, smoothLowFreqSamples, smoothLowFreqIterations);
+    
     % For stereo, waveOutputVect Nx1 -> Nx2
     waveOutputVect = [
-      processChannel(waveOutputVect, stereoAmpVects(:,1).*sampleAmpVect, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx),...
-      processChannel(waveOutputVect, stereoAmpVects(:,2).*sampleAmpVect, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx)
+      processChannel(waveOutputVect, sampleAmpVectL, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx),...
+      processChannel(waveOutputVect, sampleAmpVectR, padZerosBefore, padZerosAfter, sampleRate, freqFilterSetpointMx)
     ];
     
   endif
@@ -790,14 +794,14 @@ for chanNum=1:channels
   %% DEBUG - Store Data
   if chanNum==2
     %plotVect = sampleAmpVect;
-    plotVect = sampleStereoVect;
+    %plotVect = sampleStereoVect;
     %plotVect = waveOutputVect;
   endif
 
 endfor
 
 % DEBUG - Plot
-plot(plotVect);
+%plot(plotVect);
 
 % Provide suitable output
 display(['Time taken: ' num2str(toc) 's']);
