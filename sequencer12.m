@@ -152,14 +152,6 @@ for k=1:maxFilterNumber
   thisFilterMx = [filterFreqHzVect(thisFilterIndex) filterSetpointDB(thisFilterIndex)];
   filterStoreCell{k} = thisFilterMx;
 endfor
-%%-------
-%% DEBUG CUSTOM FILTERS
-%display(filterStoreCell);
-%tV = 0:0.01:100;
-%pMx = voiceStoreCell{end};
-%plot(waveformAdditivePartials(tV,pMx));
-%return
-%%-------
 
 % Custom Voice Table, rows have control=-90
 % Use waveType -N to access custom voice N
@@ -174,14 +166,6 @@ for k=1:maxVoiceType
   thisVoiceMx = [voiceRelFreqVect(thisVoiceIndex) voiceRelAmpVect(thisVoiceIndex)];
   voiceStoreCell{k} = thisVoiceMx;
 endfor
-%%-------
-%% DEBUG CUSTOM VOICES
-%display(voiceStoreCell);
-%tV = 0:0.01:100;
-%pMx = voiceStoreCell{end};
-%plot(waveformAdditivePartials(tV,pMx));
-%return
-%%-------
 
 % Override default values from import data
 % Each max(...) finds the LAST place that control = <specified value>
@@ -550,10 +534,6 @@ for chanNum=1:channels
 
       % Write amplitude vector (non-peak period)
       if sampleLengthNonPeak>0
-        %% DEBUG
-        %display(sampleRangeNonPeakVect);
-        %display(size(sampleRangeNonPeakVect));
-        %display(sampleLengthNonPeak);
         sampleAmpVect(sampleRangeNonPeakVect) = interpMethods(sampleLengthNonPeak,tempAmpDB,tempNextAmpDB,tempInterpTypeAmp);
       endif
 
@@ -587,12 +567,10 @@ for chanNum=1:channels
   % Ignore channel if it has no notes
   if notesWritten<1
     % No notes written on this channel - iterate to next channel
-    %display(['Channel ' num2str(chanNum) ' empty']);
     continue
   endif
 
   % Ignore channel if a mute instruction received
-  %display([chanNum muteChannel]);
   if muteChannel > 0
     continue
   endif
@@ -620,21 +598,14 @@ for chanNum=1:channels
       
       commaFreqVect = commaMult * sampleFreqVect(1:max(ceil(0.99*length(sampleFreqVect)),end-5));
       if commaChan1Status > 0
-        smoothTime = commaChan1Status;                                   % Reuse the (decimal) variable as a timescale
-        smoothSamples = floor(smoothTime*sampleRate);                    % Number of samples to smooth over
+        smoothTime = commaChan1Status;                                             % Reuse the (decimal) variable as a timescale
+        smoothSamples = floor(smoothTime*sampleRate);                              % Number of samples to smooth over
         smoothCommaVect = averageIterateMoving(commaFreqVect, smoothSamples, 5);   % Smooth five times. Multiple times improves phasing!
-        % (Its OK to run this lots of times since it only happens once per sequencing run)
-        commaFreqVect0 = commaFreqVect;                                  % Unnormalised version for graphing
-        commaFreqVect = commaFreqVect./smoothCommaVect;                  % Remove the smoothed version for normalised version
-        % ------
-        % Plot graph of comma data
-        timeVect = 1:length(commaFreqVect);
-        timeVect = (1/sampleRate)*timeVect(:);
-        plot(timeVect,1200.*log(commaFreqVect)./log(2),'b',timeVect,1200*log(smoothCommaVect)./log(2),'g',timeVect,1200.*log(commaFreqVect0)./log(2),'r');
-        %plot(timeVect,log(abs(log(commaFreqVect))),'b');
-        %display(commaFreqVect0(end-100:end)');
-        %return
-        % ------
+        commaFreqUnNormV = commaFreqVect;                                          % Unnormalised version for graphing
+        commaFreqVect = commaFreqVect./smoothCommaVect;                            % Remove the smoothed version for normalised version
+        
+        plotCommaGraph(commaFreqVect, smoothCommaVect, commaFreqUnNormV, sampleRate);
+        
         commaTag = ['NC' num2str(round(1000*commaChan1Status)) 'ms'];
         display(['Comma Channel 1 processed as commas normalised over ' num2str(round(10*commaChan1Status)/10) 's']);
       else
@@ -655,31 +626,19 @@ for chanNum=1:channels
     endif
     channelsWritten++;
   endif
-
-
-  % Frequencies now set up
-  %plot(sampleFreqVect);
-
-  %% REMOVED - 24th May 2018 - give user control of what's subtracted!
-  %% sampleAmpVect in relative dB - change to be negative only (0dB = amplitude 1)
-  %maxAmpDB = max(sampleAmpVect);
-  %sampleAmpVect = sampleAmpVect - maxAmpDB;  % -infinity to 0 dB now
   
   % Subtract the maximum dB value specified by the user
   % Make sure the dB is negative or zero (final amplitude <= 1)
   sampleAmpVect = min(0, sampleAmpVect - dBmax);  
-
+  
   % IMPROVE: dB and amp should be separate variables... Done this way for speed...  
   sampleAmpVect = 10.^(sampleAmpVect/20);          % [0, 1] pure amplitude now
-  %plot(sampleAmpVect);
-
+  
   % Anywhere frequency is zero, overwrite amplitude with zero
   sampleAmpVect(abs(sampleFreqVect)<0.001) = 0;
-  %plot(sampleAmpVect);
-
+  
   % Integrate frequency to obtain input vector for waveform
   sampleCumulFreqs = cumsum(sampleFreqVect.*commaFreqVect(1:length(sampleFreqVect)))./sampleRate;
-  %plot(sampleCumulFreqs);
 
   % Apply waveform here. Firstly via voiceType, alternatively via waveType
   % First, if there is a valid voiceType then use additive synth via sine/saw/square partials
@@ -741,9 +700,6 @@ for chanNum=1:channels
     
     % STEREO CASE
     stereoText = 'in stereo';
-
-    % Stereo vector: remove high frequency info to prevent clipping at start and end of notes
-    %sampleStereoVect = averageIterateMoving(sampleStereoVect, smoothLowFreqSamples, smoothLowFreqIterations);
     
     % In next statement, input is Nx1 vect of stereo positions
     % -100 for L, 0 for M, +100 for R
@@ -772,11 +728,11 @@ for chanNum=1:channels
   wavwrite(waveOutputVect,sampleRate,bitRate,outputPathAndFileWAV);
   
   %% DEBUG - Store Data
-  if chanNum==2
+  %if chanNum==2
     %plotVect = sampleAmpVect;
     %plotVect = sampleStereoVect;
     %plotVect = waveOutputVect;
-  endif
+  %endif
 
 endfor
 
