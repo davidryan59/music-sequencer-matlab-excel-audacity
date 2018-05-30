@@ -40,60 +40,44 @@ function [retval] = sequencer12(options)
   importResult = ['Import succeeded with size ' num2str(size(dataImport))];
   display(importResult);
   
-  % Some important variables
-  datarows = size(dataImport,1)-1;
-  datacols = size(dataImport,2);
-  vectBlank = zeros(datarows,1);
-  vectUnit = (1:datarows)';       % Rename? Its 1..N as a column vector
   
-  % Get defaults for each sequence variable
-  vectControl = vectBlank;
-  vectChannel = vectBlank;
-  vectLengthBeats = vectBlank;
-  vectFreqOrParam = vectBlank;
-  vectFreqInterpType = vectBlank;
-  vectAmplitudeDB = vectBlank;
-  vectAmpInterpType = vectBlank+1;       % Default interpolation is linear for amplitude (e.g. constant decay), not zero
-  vectAmpTiedToPrevBool = vectBlank;
-  vectAmpEndAtNextBool = vectBlank;
-  vectStereoPos = vectBlank;
-  vectStereoInterpType = vectBlank;
+  % Process the data import to get only the relevant columns
+  % Row format is colID, defaultValue
+  colMappingMx = [
+    200,   0   % (New) column 1: control
+    300,   0   % Col 2: channel
+    400,   0   % Col 3: length (beats)
+    500,   0   % Col 4: frequency or parameter
+    510,   0   % Col 5: frequency interpolation type
+    600,   0   % Col 6: amplitude in dB
+    610,  1    % Col 7: amplitude interpolation type - default to 1 (linear)
+    620,   0   % Col 8: amplitude tied to previous note (boolean)
+    630,   0   % Col 9: amplitude ends at next note (boolean)
+    640,   0   % Col 10: note length (ms) - negative is subtracted from end of note
+    650,   0   % Col 11: note length percent multiply
+    700,   0   % Col 12: stereo position
+    710,   0   % Col 13: stereo interpolation type
+  ];
   
-  % Match import columns to sequence variables
-  for k=1:datacols
-    colID = dataImport(1,k);
-    colData = dataImport(2:end,k);
-    switch colID
-      case 200
-        vectControl = colData;
-      case 300
-        vectChannel = colData;
-      case 400
-        vectLengthBeats = max(0,colData);  % Later on beats are counted up
-      case 500
-        vectFreqOrParam = colData;
-      case 510
-        vectFreqInterpType = colData;
-      case 600
-        vectAmplitudeDB = colData;
-      case 610
-        vectAmpInterpType = colData;
-      case 620
-        vectAmpTiedToPrevBool = colData;
-      case 630
-        vectAmpEndAtNextBool = colData;
-      case 640
-        vectNoteLengthMS = colData;
-      case 650
-        vectNoteLengthPercentMult = colData;
-      case 700
-        vectStereoPos = colData;
-      case 710
-        vectStereoInterpType = colData;
-      otherwise
-        % Column not claimed - ignore
-    endswitch
-  endfor
+  dataImport = filterDataCols(dataImport, colMappingMx);
+  
+  vectControl = dataImport(:,1);
+  vectChannel = dataImport(:,2);
+  vectLengthBeats = dataImport(:,3);
+  vectFreqOrParam = dataImport(:,4);
+  vectFreqInterpType = dataImport(:,5);
+  vectAmplitudeDB = dataImport(:,6);
+  vectAmpInterpType = dataImport(:,7);
+  vectAmpTiedToPrevBool = dataImport(:,8);
+  vectAmpEndAtNextBool = dataImport(:,9);
+  vectNoteLengthMS = dataImport(:,10);
+  vectNoteLengthPercentMult = dataImport(:,11);
+  vectStereoPos = dataImport(:,12);
+  vectStereoInterpType = dataImport(:,13);
+  
+  % Later on beats are counted up, make non-negative
+  vectLengthBeats = max(0, vectLengthBeats);
+  
   
   % Setup default values for main parameters over all channels
   % -------------
@@ -165,19 +149,19 @@ function [retval] = sequencer12(options)
   
   % Override default parameters from import data
   % IMPROVE: These could really go in a separate table.
-  parameterSet = lookUpParameter(parameterSet, 111, vectFreqOrParam, vectControl, vectUnit);
-  sampleRate = lookUpParameter(sampleRate, 100, vectFreqOrParam, vectControl, vectUnit);
-  bitRate = lookUpParameter(bitRate, 110, vectFreqOrParam, vectControl, vectUnit);
-  alwaysDecay = lookUpParameter(alwaysDecay, 112, vectFreqOrParam, vectControl, vectUnit);
-  padSecondsBefore = lookUpParameter(padSecondsBefore, 120, vectFreqOrParam, vectControl, vectUnit);
-  padSecondsAfter = lookUpParameter(padSecondsAfter, 121, vectFreqOrParam, vectControl, vectUnit);
-  beatsPerMinute = lookUpParameter(beatsPerMinute, 130, vectFreqOrParam, vectControl, vectUnit);
-  beatsInBar = lookUpParameter(beatsInBar, 140, vectFreqOrParam, vectControl, vectUnit);
-  startBar = lookUpParameter(startBar, 150, vectFreqOrParam, vectControl, vectUnit);
-  endBar = lookUpParameter(endBar, 151, vectFreqOrParam, vectControl, vectUnit);
-  freqMult = lookUpParameter(freqMult, 180, vectFreqOrParam, vectControl, vectUnit);
-  stereoPosMult = lookUpParameter(stereoPosMult, 181, vectFreqOrParam, vectControl, vectUnit);
-  commaChan1Status = lookUpParameter(commaChan1Status, 190, vectFreqOrParam, vectControl, vectUnit);
+  parameterSet = lookUpParameter(parameterSet, 111, vectFreqOrParam, vectControl);
+  sampleRate = lookUpParameter(sampleRate, 100, vectFreqOrParam, vectControl);
+  bitRate = lookUpParameter(bitRate, 110, vectFreqOrParam, vectControl);
+  alwaysDecay = lookUpParameter(alwaysDecay, 112, vectFreqOrParam, vectControl);
+  padSecondsBefore = lookUpParameter(padSecondsBefore, 120, vectFreqOrParam, vectControl);
+  padSecondsAfter = lookUpParameter(padSecondsAfter, 121, vectFreqOrParam, vectControl);
+  beatsPerMinute = lookUpParameter(beatsPerMinute, 130, vectFreqOrParam, vectControl);
+  beatsInBar = lookUpParameter(beatsInBar, 140, vectFreqOrParam, vectControl);
+  startBar = lookUpParameter(startBar, 150, vectFreqOrParam, vectControl);
+  endBar = lookUpParameter(endBar, 151, vectFreqOrParam, vectControl);
+  freqMult = lookUpParameter(freqMult, 180, vectFreqOrParam, vectControl);
+  stereoPosMult = lookUpParameter(stereoPosMult, 181, vectFreqOrParam, vectControl);
+  commaChan1Status = lookUpParameter(commaChan1Status, 190, vectFreqOrParam, vectControl);
   
   % Channel 1 Comma Status
   % 0 to play channel 1 like a standard channel. Other options do not play channel 1.

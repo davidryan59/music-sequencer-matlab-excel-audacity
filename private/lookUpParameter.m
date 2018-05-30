@@ -1,7 +1,7 @@
 ## Author: David Ryan
 ## Created: 2018-05-29
 
-function [retval] = lookUpParameter(originalValue, lookupNum, paramVect, vectControl, vectUnit)
+function [retval] = lookUpParameter(originalValue, lookupNum, paramVect, vectControl)
   
   % DEBUG
   %display(['lookUpParameter running for ' num2str(lookupNum)]);
@@ -13,6 +13,8 @@ function [retval] = lookUpParameter(originalValue, lookupNum, paramVect, vectCon
   matchingRows = (vectControl==lookupNum);
   
   % Find the highest row number
+  lenV = length(paramVect);
+  vectUnit = (1:lenV)';
   highestFoundIndex = max(vectUnit.*matchingRows);
   
   if highestFoundIndex > 0
