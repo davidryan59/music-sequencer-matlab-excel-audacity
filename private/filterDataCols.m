@@ -6,6 +6,14 @@ function [retval] = filterDataCols(dataImport, colMappingMx)
   % IMPROVE: If a column is duplicated in dataImport it will give unpredictable results
   % Deduplicate column headers first...
   
+  % Select just the relevant parts of mapping matrix
+  % Only keep rows with values greater than zero in first column
+  % Only keep columns 1, 2
+  colMappingMx = colMappingMx(colMappingMx(:,1)>0, 1:2);
+  
+  % Display the column mapping
+  display([(1:length(colMappingMx))' colMappingMx]);
+  
   % Specify which columns to retain, in which order
   finalColOrder = colMappingMx(:,1)';
   defaultValues = colMappingMx(:,2)';

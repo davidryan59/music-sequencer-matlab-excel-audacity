@@ -11,7 +11,7 @@ function [retval] = sequencer12(options)
   inputDir = getParam(options, 'inputDir', '.');
   outputDir = getParam(options, 'outputDir', '.');
   fileTag = getParam(options, 'fileTag', '');
-  
+  colMappingFile = getParam(options, 'colMappingFile', '');
   % newVariable = getParam(options, 'newField', 'default value');
   display(options);
   
@@ -40,25 +40,16 @@ function [retval] = sequencer12(options)
   importResult = ['Import succeeded with size ' num2str(size(dataImport))];
   display(importResult);
   
-  
   % Process the data import to get only the relevant columns
-  % Row format is colID, defaultValue
-  colMappingMx = [
-    200,   0   % (New) column 1: control
-    300,   0   % Col 2: channel
-    400,   0   % Col 3: length (beats)
-    500,   0   % Col 4: frequency or parameter
-    510,   0   % Col 5: frequency interpolation type
-    600,   0   % Col 6: amplitude in dB
-    610,  1    % Col 7: amplitude interpolation type - default to 1 (linear)
-    620,   0   % Col 8: amplitude tied to previous note (boolean)
-    630,   0   % Col 9: amplitude ends at next note (boolean)
-    640,   0   % Col 10: note length (ms) - negative is subtracted from end of note
-    650,   0   % Col 11: note length percent multiply
-    700,   0   % Col 12: stereo position
-    710,   0   % Col 13: stereo interpolation type
-  ];
-  
+  % Row format is colID, defaultValue  
+  try
+    colMappingMx = csvread(colMappingFile);
+  catch
+    importResult = 'Column mapping file import failed';
+    return
+  end_try_catch
+  importResult = ['Column mapping file import succeeded with size ' num2str(size(colMappingMx))];
+  display(importResult);
   dataImport = filterDataCols(dataImport, colMappingMx);
   
   vectControl = dataImport(:,1);
