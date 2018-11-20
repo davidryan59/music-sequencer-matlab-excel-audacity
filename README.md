@@ -29,24 +29,31 @@ Created a Music Sequencer using:
 - Find the outputted .wav files in the output directory
 
 ## Required directory structure
+(Updated Nov 2018)
+
 * Make the following directory structure first:
 - octave (or matlab! But octave is free...)
-  - data
-    - seq_12
-      - input  (3)
-      - output (4)
-  - src
-    - projects
-      - seq_12 (1)
-    - shared   (2)
+  - 01-code
+    - shared (2)
       - audio
       - general
+    - projects
+      - sequencers
+        - seq-12-code (1)
+  - 02-input
+    - projects
+      - sequencers
+        - seq-12-input (3)
+  - 03-temp-output
+    - projects
+      - sequencers
+        - seq-12-output (4)
+
 Then:
-(1) Sync GitHub sequencer repo to dir *src/projects/seq_12*
-(2) Sync GitHub shared functions repo to dir *src/shared*
-(3) Start writing Excel/CSV sequence files in the input dir
-Run the sequencer on them (use run_seq12 file to specify inputs)
-(4) Receive .wav output files in the output dir
+(1) Sync GitHub sequencer repo to dir *octave/01-code/projects/sequencers/seq-12-code*
+(2) Sync GitHub shared functions repo to dir *octave/01-code/shared*
+(3) Start writing Excel/CSV sequence files in the input dir. Run the sequencer on them (use run_seq12 file to specify inputs)
+(4) Receive .wav output files in the output dir, and mix them using a suitable post-processing tool (Audacity is an excellent choice, and it is free.)
 
 ## Result
 I made many music files with this sequencer (or prev versions v10, v11).

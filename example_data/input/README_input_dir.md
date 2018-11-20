@@ -1,1 +1,1 @@
-(This directory will contain example Excel spreadsheets)
+(This directory contains sample Excel spreadsheets for input to the sequencer)
