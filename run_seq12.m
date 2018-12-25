@@ -26,20 +26,18 @@ fileTag = '';
 %fileTag = 'hi';
 
 % Specify needed directories
-%codeDir = '../../../../01-input/projects/sequencers/seq-12-code';   % This directory!
-inputDir = '../../../../02-input/projects/sequencers/seq-12-input';
-outputDir = '../../../../03-temp-output/projects/sequencers/seq-12-output';
+%codeDir = '../../../01-input/sequencers/seq-12-code';   % This directory!
+inputDir = '../../../02-input/sequencers/seq-12-input';
+outputDir = '../../../03-temp-output/sequencers/seq-12-output';
 sharedDir = '../../../shared';
-fnsAudioDir = [sharedDir '/audio'];
-fnsGeneralDir = [sharedDir '/general'];
 fnsPrivateDir = 'private';
 colMappingFile = 'private/columnMapping.csv';
 
 % Add them to the load path
 addpath(inputDir);
 addpath(outputDir);
-addpath(fnsAudioDir);
-addpath(fnsGeneralDir);
+addpath(sharedDir);
+setupSharedPaths;
 addpath(fnsPrivateDir);
 
 % Setup a struct to input the options to the sequencer
@@ -62,6 +60,6 @@ display(sequencerResult);
 % Remove directories that have been added
 rmpath(inputDir);
 rmpath(outputDir);
-rmpath(fnsAudioDir);
-rmpath(fnsGeneralDir);
+removeSharedPaths;
+rmpath(sharedDir);
 rmpath(fnsPrivateDir);

@@ -3,8 +3,8 @@
 * Outputs in .wav format
 
 ## Need these GitHub repos
-- Sequencer: https://github.com/daveryan23/music_sequencer_matlab_excel_audacity
-- Shared functions: https://github.com/daveryan23/matlab_octave_shared_functions
+- Sequencer: https://github.com/davidryan59/music-sequencer-matlab-excel-audacity
+- Shared functions: https://github.com/davidryan59/matlab-octave-shared-functions
 
 ## Scope of Project
 Created a Music Sequencer using:
@@ -58,7 +58,7 @@ Then:
 ## Result
 I made many music files with this sequencer (or prev versions v10, v11).
 
-You can listen to my tracks at: https://soundcloud.com/daveryan23/tracks
+You can listen to my tracks at: https://soundcloud.com/davidryan59/tracks
 
 Also see the notation paper at: https://arxiv.org/abs/1612.01860
 
